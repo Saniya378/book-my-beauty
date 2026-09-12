@@ -20,7 +20,7 @@
 
         .left-panel {
             flex: 1;
-            background: linear-gradient(rgba(26, 26, 46, 0.92), rgba(15, 52, 96, 0.95)), url('{{ asset('images/image.jpg') }}') center/cover no-repeat;
+            background: linear-gradient(rgba(26, 26, 46, 0.55), rgba(15, 52, 96, 0.6)), url('{{ asset('images/login.jpg') }}') center/cover no-repeat;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;

@@ -1,12 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap');
 :root {
-    --primary: #1a1a2e;
-    --primary-dark: #16213e;
-    --primary-darker: #0f3460;
-    --accent: #c9a96e;
-    --accent-light: #f0e6d3;
-    --light-bg: #fafafa;
-    --white: #ffffff;
+    --primary: #2d3561;
+    --primary-dark: #242a4d;
+    --primary-darker: #1c2140;
+    --accent: #e0bd7d;
+    --accent-light: #faf3e6;
+    --light-bg: #fdfbf8;
     --text-dark: #2c2c2c;
     --text-gray: #777777;
     --border: #e8e8e8;
@@ -488,10 +487,11 @@ a {
 /* HERO */
 
 .hero {
-    background: linear-gradient(rgba(26, 26, 46, 0.75), rgba(15, 52, 96, 0.85)), url('images/hero.jpg') center/cover no-repeat;
+    background: linear-gradient(rgba(26, 26, 46, 0.45), rgba(15, 52, 96, 0.5)), url('images/hero.jpg') center/cover no-repeat;
     color: white;
     text-align: center;
     padding: 140px 20px;
+    position: relative;
 }
 
 .hero h2 {
@@ -517,37 +517,49 @@ a {
     margin-bottom: 45px;
 }
 
+.hero-btns {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
 .hero-btns a {
     display: inline-block;
-    padding: 15px 40px;
-    border-radius: 3px;
+    padding: 11px 28px;
+    border-radius: 30px;
     text-decoration: none;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
-    margin: 0 10px;
+    margin: 0 8px;
     transition: all 0.3s;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    text-transform: none;
 }
 
 .btn-white {
     background: var(--accent);
     color: var(--primary);
+    border: 2px solid var(--accent);
 }
 
 .btn-white:hover {
-    background: #b8935a;
+    background: transparent;
+    color: white;
+    border-color: white;
     transform: translateY(-2px);
 }
 
 .btn-outline {
-    border: 2px solid white;
+    border: 2px solid rgba(255, 255, 255, 0.6);
     color: white;
+    background: transparent;
 }
 
 .btn-outline:hover {
     background: white;
     color: var(--primary);
+    border-color: white;
     transform: translateY(-2px);
 }
 
@@ -657,7 +669,7 @@ a {
 footer {
     text-align: center;
     padding: 30px;
-    background: #111122;
+    background: #252566;
     color: rgba(255, 255, 255, 0.5);
     font-size: 12px;
     letter-spacing: 0.5px;

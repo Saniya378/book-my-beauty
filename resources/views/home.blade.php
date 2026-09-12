@@ -133,7 +133,7 @@
 @section('content')
     <!-- Hero Section -->
     <div class="hero"
-        style="background: linear-gradient(rgba(26,26,46,0.85), rgba(15,52,96,0.9)), url('{{ asset('images/hero.jpg') }}') center/cover no-repeat; padding: 110px 40px; text-align: center; color: white;">
+        style="background: linear-gradient(rgba(26,26,46,0.6), rgba(15,52,96,0.6)), url('{{ asset('images/hero.jpg') }}') center/cover no-repeat; padding: 110px 40px; text-align: center; color: white;">
         <div class="hero-content" style="max-width: 800px; margin: 0 auto;">
             <h2 style="font-family: 'Playfair Display', serif; font-size: 46px; line-height: 1.25; margin-bottom: 20px;">
                 Book <span style="color: var(--accent);">Luxury Beauty</span> Services Online
