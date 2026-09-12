@@ -19,9 +19,11 @@
             background: linear-gradient(rgba(26,26,46,0.92), rgba(15,52,96,0.95)), url('{{ asset('images/image.jpg') }}') center/cover no-repeat;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
             padding: 60px;
+            padding-top: 100px;
             color: white;
+            position: relative;
         }
         .left-panel .logo-mark {
             font-family: 'Playfair Display', serif;
@@ -53,14 +55,15 @@
             position: relative;
         }
         .back-to-browse {
+            position: absolute;
+            top: 30px;
+            left: 60px;
             display: inline-flex;
             align-items: center;
             gap: 6px;
             font-size: 13px;
-            color: var(--text-gray);
+            color: rgba(255,255,255,0.8);
             text-decoration: none;
-            margin-bottom: 25px;
-            width: fit-content;
         }
         .back-to-browse:hover { color: var(--accent); }
         .form-header { margin-bottom: 30px; }
@@ -90,6 +93,45 @@
             transition: border-color 0.2s;
         }
         .form-group input:focus { border-color: var(--accent); }
+        .password-wrapper {
+            position: relative;
+        }
+        .password-wrapper input {
+            padding-right: 42px;
+        }
+        .password-toggle {
+            position: absolute;
+            right: 6px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 32px;
+            height: 32px;
+            background: none;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 0;
+            margin: 0;
+            line-height: 0;
+            color: #9a9a9a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            -webkit-appearance: none;
+            appearance: none;
+            box-sizing: border-box;
+        }
+        .password-toggle:hover,
+        .password-toggle:focus,
+        .password-toggle:active { color: var(--primary); transform: translateY(-50%); }
+        .password-toggle svg {
+            width: 19px;
+            height: 19px;
+            display: block;
+        }
+        .password-toggle .icon-hide { display: none; }
+        .password-toggle.is-visible .icon-show { display: none; }
+        .password-toggle.is-visible .icon-hide { display: block; }
         .form-footer {
             margin-top: 25px;
             text-align: center;
@@ -106,7 +148,7 @@
 </head>
 <body>
     <div class="left-panel">
-          <a href="{{ route('browse') }}" class="back-to-browse">&larr; Back to Browse</a>
+        <a href="{{ route('browse') }}" class="back-to-browse">&larr; Back to Browse</a>
         <a href="{{ route('home') }}" style="text-decoration: none; color: white;">
             <div class="logo-mark">Beauty <em>Portal</em></div>
         </a>
@@ -115,8 +157,6 @@
     </div>
 
     <div class="right-panel">
-      
-
         <div class="form-header">
             <h3>Welcome Back</h3>
             <p>Log in to access your appointments and favorites.</p>
@@ -136,7 +176,13 @@
                     <label for="password" style="margin: 0;">Password</label>
                     <a href="{{ route('password.request') }}" style="font-size: 12px; color: var(--accent); text-decoration: none;">Forgot password?</a>
                 </div>
-                <input type="password" id="password" name="password" required placeholder="Enter your password">
+                <div class="password-wrapper">
+                    <input type="password" id="password" name="password" required placeholder="Enter your password">
+                    <button type="button" class="password-toggle" data-target="password" aria-label="Show password">
+                        <svg class="icon-show" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                        <svg class="icon-hide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a20.3 20.3 0 0 1 5.06-6.06M9.9 4.24A10.4 10.4 0 0 1 12 4c7 0 11 8 11 8a20.32 20.32 0 0 1-3.22 4.44M14.12 14.12a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                    </button>
+                </div>
             </div>
 
             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 20px;">
@@ -151,5 +197,17 @@
             Don't have an account? <a href="{{ route('register') }}">Create an account</a>
         </div>
     </div>
+
+    <script>
+        document.querySelectorAll('.password-toggle').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var input = document.getElementById(btn.getAttribute('data-target'));
+                var showing = input.type === 'text';
+                input.type = showing ? 'password' : 'text';
+                btn.classList.toggle('is-visible', !showing);
+                btn.setAttribute('aria-label', showing ? 'Show password' : 'Hide password');
+            });
+        });
+    </script>
 </body>
 </html>
