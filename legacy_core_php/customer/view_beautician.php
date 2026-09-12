@@ -43,7 +43,7 @@ if (isset($_SESSION['user_id']) && $_SESSION['user_role'] == 'customer') {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title><?php echo htmlspecialchars($beautician['name']); ?> - Beauty Portal</title>
+    <title><?php echo htmlspecialchars($beautician['name']); ?> - BookMyBeauty</title>
     <link rel="stylesheet" href="../style.css">
     <style>
         .profile-hero {

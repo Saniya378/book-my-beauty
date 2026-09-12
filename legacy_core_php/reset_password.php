@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && $valid) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Reset Password - Beauty Portal</title>
+    <title>Reset Password - BookMyBeauty</title>
     <link rel="stylesheet" href="style.css">
     <style>
         body {

@@ -15,7 +15,7 @@ if (isset($_SESSION['user_id'])) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Beauty Portal</title>
+    <title>BookMyBeauty</title>
     <link rel="stylesheet" href="style.css">
     <style>
         .stats-strip {

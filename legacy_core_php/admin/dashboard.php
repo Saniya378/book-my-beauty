@@ -140,7 +140,7 @@ $pending_bookings = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as t
     <div class="admin-header">
         <div>
             <h2>Admin Dashboard</h2>
-            <p>Manage your Beauty Portal platform</p>
+            <p>Manage your BookMyBeauty platform</p>
         </div>
         <div class="admin-date">
             <strong><?php echo date('d M Y'); ?></strong>

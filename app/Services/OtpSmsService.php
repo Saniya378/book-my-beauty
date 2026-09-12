@@ -31,7 +31,7 @@ class OtpSmsService
             $client = new \Twilio\Rest\Client($sid, $token);
             $client->messages->create($phone, [
                 'from' => $from,
-                'body' => "Your Beauty Portal OTP is: {$otp}. Valid for 10 minutes. Do not share this code.",
+                'body' => "Your BookMyBeauty OTP is: {$otp}. Valid for 10 minutes. Do not share this code.",
             ]);
 
             return [

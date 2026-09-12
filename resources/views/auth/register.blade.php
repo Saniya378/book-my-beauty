@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - Beauty Portal</title>
+    <title>Register - BookMyBeauty</title>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap"
@@ -29,7 +29,7 @@
             color: white;
             position: relative;
         }
-        
+
 
         .left-panel .logo-mark {
             font-family: 'Playfair Display', serif;
@@ -133,9 +133,11 @@
         .password-wrapper {
             position: relative;
         }
+
         .password-wrapper input {
             padding-right: 40px;
         }
+
         .password-toggle {
             position: absolute;
             right: 5px;
@@ -158,17 +160,31 @@
             appearance: none;
             box-sizing: border-box;
         }
+
         .password-toggle:hover,
         .password-toggle:focus,
-        .password-toggle:active { color: var(--primary); transform: translateY(-50%); }
+        .password-toggle:active {
+            color: var(--primary);
+            transform: translateY(-50%);
+        }
+
         .password-toggle svg {
             width: 18px;
             height: 18px;
             display: block;
         }
-        .password-toggle .icon-hide { display: none; }
-        .password-toggle.is-visible .icon-show { display: none; }
-        .password-toggle.is-visible .icon-hide { display: block; }
+
+        .password-toggle .icon-hide {
+            display: none;
+        }
+
+        .password-toggle.is-visible .icon-show {
+            display: none;
+        }
+
+        .password-toggle.is-visible .icon-hide {
+            display: block;
+        }
 
         .steps-indicator {
             display: flex;
@@ -236,11 +252,11 @@
     <div class="left-panel">
         <a href="{{ route('browse') }}" class="back-to-browse">&larr; Back to Browse</a>
         <a href="{{ route('home') }}" style="text-decoration: none; color: white;">
-            <div class="logo-mark">Beauty <em>Portal</em></div>
+            <div class="logo-mark">BookMy<em>Beauty</em></div>
         </a>
         <h2>Join Our Growing<br>Beauty Community.</h2>
         <p>Whether you're looking to book luxurious salon appointments or build and manage your independent beautician
-            business, Beauty Portal is designed for you.</p>
+            business, BookMyBeauty is designed for you.</p>
     </div>
 
     <div class="right-panel">
@@ -288,8 +304,17 @@
                 <div class="password-wrapper">
                     <input type="password" id="password" name="password" required placeholder="At least 6 characters">
                     <button type="button" class="password-toggle" data-target="password" aria-label="Show password">
-                        <svg class="icon-show" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
-                        <svg class="icon-hide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a20.3 20.3 0 0 1 5.06-6.06M9.9 4.24A10.4 10.4 0 0 1 12 4c7 0 11 8 11 8a20.32 20.32 0 0 1-3.22 4.44M14.12 14.12a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                        <svg class="icon-show" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" />
+                            <circle cx="12" cy="12" r="3" />
+                        </svg>
+                        <svg class="icon-hide" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a20.3 20.3 0 0 1 5.06-6.06M9.9 4.24A10.4 10.4 0 0 1 12 4c7 0 11 8 11 8a20.32 20.32 0 0 1-3.22 4.44M14.12 14.12a3 3 0 1 1-4.24-4.24" />
+                            <line x1="1" y1="1" x2="23" y2="23" />
+                        </svg>
                     </button>
                 </div>
             </div>
@@ -299,9 +324,19 @@
                 <div class="password-wrapper">
                     <input type="password" id="password_confirmation" name="password_confirmation" required
                         placeholder="Re-enter password">
-                    <button type="button" class="password-toggle" data-target="password_confirmation" aria-label="Show password">
-                        <svg class="icon-show" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
-                        <svg class="icon-hide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a20.3 20.3 0 0 1 5.06-6.06M9.9 4.24A10.4 10.4 0 0 1 12 4c7 0 11 8 11 8a20.32 20.32 0 0 1-3.22 4.44M14.12 14.12a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                    <button type="button" class="password-toggle" data-target="password_confirmation"
+                        aria-label="Show password">
+                        <svg class="icon-show" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" />
+                            <circle cx="12" cy="12" r="3" />
+                        </svg>
+                        <svg class="icon-hide" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a20.3 20.3 0 0 1 5.06-6.06M9.9 4.24A10.4 10.4 0 0 1 12 4c7 0 11 8 11 8a20.32 20.32 0 0 1-3.22 4.44M14.12 14.12a3 3 0 1 1-4.24-4.24" />
+                            <line x1="1" y1="1" x2="23" y2="23" />
+                        </svg>
                     </button>
                 </div>
             </div>
@@ -318,8 +353,8 @@
     </div>
 
     <script>
-        document.querySelectorAll('.password-toggle').forEach(function (btn) {
-            btn.addEventListener('click', function () {
+        document.querySelectorAll('.password-toggle').forEach(function(btn) {
+            btn.addEventListener('click', function() {
                 var input = document.getElementById(btn.getAttribute('data-target'));
                 var showing = input.type === 'text';
                 input.type = showing ? 'password' : 'text';

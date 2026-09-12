@@ -38,9 +38,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $mail->addAddress($email, $user['name']);
 
             $mail->isHTML(true);
-            $mail->Subject = 'Reset your Beauty Portal password';
+            $mail->Subject = 'Reset your BookMyBeauty password';
             $mail->Body = "Hi " . htmlspecialchars($user['name']) . ",<br><br>"
-                . "We received a request to reset your Beauty Portal password. Click the link below to set a new one (valid for 1 hour):<br><br>"
+                . "We received a request to reset your BookMyBeauty password. Click the link below to set a new one (valid for 1 hour):<br><br>"
                 . "<a href='" . $reset_link . "'>" . $reset_link . "</a><br><br>"
                 . "If you didn't request this, you can safely ignore this email.";
             $mail->AltBody = "Reset your password using this link (valid 1 hour): " . $reset_link;
@@ -60,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Forgot Password - Beauty Portal</title>
+    <title>Forgot Password - BookMyBeauty</title>
     <link rel="stylesheet" href="style.css">
     <style>
         body {

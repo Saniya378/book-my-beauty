@@ -19,7 +19,7 @@ class ReceiptPdfService
         $pdf->SetTextColor(255, 255, 255);
         $pdf->SetFont('Helvetica', 'B', 20);
         $pdf->SetXY(15, 9);
-        $pdf->Cell(0, 12, 'Beauty Portal', 0, 1);
+        $pdf->Cell(0, 12, 'BookMyBeauty', 0, 1);
         $pdf->SetFont('Helvetica', '', 11);
         $pdf->SetXY(15, 20);
         $pdf->Cell(0, 6, 'Appointment Receipt', 0, 1);
@@ -84,7 +84,7 @@ class ReceiptPdfService
 
         $pdf->SetFont('Helvetica', 'I', 9);
         $pdf->SetTextColor(130, 130, 130);
-        $pdf->MultiCell(0, 5, "This receipt confirms your appointment details on Beauty Portal. Bookings can be cancelled within 2 hours of booking from the 'My Bookings' page. Payment is made in person at the time of your appointment.");
+        $pdf->MultiCell(0, 5, "This receipt confirms your appointment details on BookMyBeauty. Bookings can be cancelled within 2 hours of booking from the 'My Bookings' page. Payment is made in person at the time of your appointment.");
 
         return $pdf->Output('S');
     }

@@ -279,10 +279,10 @@ class AuthController extends Controller
         try {
             Mail::send([], [], function ($message) use ($user, $resetUrl) {
                 $message->to($user->email, $user->name)
-                    ->subject('Reset your Beauty Portal password')
+                    ->subject('Reset your BookMyBeauty password')
                     ->html("
                         <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 8px;'>
-                            <h2 style='color: #1a1a2e; margin-bottom: 20px;'>Beauty Portal Password Reset</h2>
+                            <h2 style='color: #1a1a2e; margin-bottom: 20px;'>BookMyBeauty Password Reset</h2>
                             <p>Hi <strong>" . htmlspecialchars($user->name) . "</strong>,</p>
                             <p>We received a request to reset your password. Click the button below to choose a new one (valid for 1 hour):</p>
                             <p style='margin: 25px 0;'>
@@ -388,11 +388,11 @@ class AuthController extends Controller
         try {
             Mail::send([], [], function ($message) use ($email, $otp) {
                 $message->to($email)
-                    ->subject('Your Beauty Portal verification code')
+                    ->subject('Your BookMyBeauty verification code')
                     ->html("
                         <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 8px;'>
                             <h2 style='color: #1a1a2e; margin-bottom: 20px;'>Verify Your Email</h2>
-                            <p>Use the code below to complete your Beauty Portal registration. This code expires in " . self::OTP_EXPIRY_MINUTES . " minutes.</p>
+                            <p>Use the code below to complete your BookMyBeauty registration. This code expires in " . self::OTP_EXPIRY_MINUTES . " minutes.</p>
                             <p style='margin: 25px 0; text-align: center;'>
                                 <span style='display: inline-block; background: #1a1a2e; color: #c9a96e; padding: 14px 28px; border-radius: 8px; font-size: 28px; font-weight: bold; letter-spacing: 6px;'>{$otp}</span>
                             </p>

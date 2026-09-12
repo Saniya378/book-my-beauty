@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Register - Beauty Portal</title>
+    <title>Register - BookMyBeauty</title>
     <link rel="stylesheet" href="style.css">
     <style>
         body {
@@ -135,7 +135,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
      <a href="index.php" class="back-link">← Back to Home</a>
     <div class="logo-mark">Beauty <em>Portal</em></div>
     <h2>Join Gilgit's growing Beauty community.</h2>
-    <p>Whether you're looking for services or offering them, Beauty Portal connects you with the right people.</p>
+    <p>Whether you're looking for services or offering them, BookMyBeauty connects you with the right people.</p>
 
     <div class="perks">
         <div class="perk-item">
@@ -153,7 +153,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <div class="right-panel">
     <div class="form-box">
         <h2>Create Account</h2>
-        <p class="subtitle">Join Beauty Portal today</p>
+        <p class="subtitle">Join BookMyBeauty today</p>
 
         <?php if($error) echo "<p class='error'>$error</p>"; ?>
         <?php if($success) echo "<p class='success'>$success</p>"; ?>

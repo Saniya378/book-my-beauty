@@ -67,7 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login - Beauty Portal</title>
+    <title>Login - BookMyBeauty</title>
     <link rel="stylesheet" href="style.css">
     <style>
         body {

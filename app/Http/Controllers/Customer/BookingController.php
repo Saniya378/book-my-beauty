@@ -126,7 +126,7 @@ class BookingController extends Controller
         try {
             Mail::send([], [], function ($message) use ($customer, $beautician, $service, $dateFormatted, $timeFormatted, $endTimeFormatted) {
                 $message->to($customer->email, $customer->name)
-                    ->subject('Your Beauty Portal appointment is booked!')
+                    ->subject('Your BookMyBeauty appointment is booked!')
                     ->html("
                         <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 8px;'>
                             <h2 style='color: #1a1a2e;'>Appointment Confirmed</h2>

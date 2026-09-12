@@ -24,7 +24,7 @@
                 <span style="color: white; font-weight: bold; font-size: 15px; font-family: 'Playfair Display', serif;">Bella</span>
                 <span style="background: var(--accent); color: var(--primary); font-size: 9px; font-weight: 700; letter-spacing: 0.5px; padding: 2px 7px; border-radius: 10px; text-transform: uppercase;">AI</span>
             </div>
-            <span style="color: rgba(255,255,255,0.65); font-size: 10px;">Beauty Portal Assistant</span>
+            <span style="color: rgba(255,255,255,0.65); font-size: 10px;">BookMyBeauty Assistant</span>
         </div>
         <span onclick="toggleChat()" style="color: white; cursor: pointer; font-size: 18px; line-height: 1;">&times;</span>
     </div>

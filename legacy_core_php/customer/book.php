@@ -94,7 +94,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $mail->addAddress($customer_info['email'], $customer_info['name']);
 
                     $mail->isHTML(true);
-                    $mail->Subject = 'Your Beauty Portal appointment is booked!';
+                    $mail->Subject = 'Your BookMyBeauty appointment is booked!';
                     $mail->Body =
                         "Hi " . htmlspecialchars($customer_info['name']) . ",<br><br>"
                         . "Your appointment has been booked successfully. Here are the details:<br><br>"
@@ -104,7 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         . "<b>Date:</b> " . $dfmt . "<br>"
                         . "<b>Time:</b> " . $tfmt . "<br><br>"
                         . "You can cancel this booking within 2 hours of making it from the 'My Bookings' page.<br><br>"
-                        . "Thank you for using Beauty Portal!";
+                        . "Thank you for using BookMyBeauty!";
                     $mail->AltBody = "Your appointment with " . $beautician['name'] . " for " . $service_owner_check['service_name'] . " on " . $dfmt . " at " . $tfmt . " has been booked.";
 
                     $mail->send();

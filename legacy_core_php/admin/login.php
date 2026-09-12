@@ -95,7 +95,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <div class="admin-login-box">
         <h2>Administrator Access</h2>
-        <p class="subtitle">Beauty Portal internal login</p>
+        <p class="subtitle">BookMyBeauty internal login</p>
 
         <?php if($error) echo "<p class='error'>" . htmlspecialchars($error) . "</p>"; ?>
 
