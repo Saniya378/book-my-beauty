@@ -19,9 +19,9 @@
 <body>
     <nav class="navbar" style="background: #111424; border-bottom: 2px solid var(--accent);">
         <div style="display: flex; align-items: center; gap: 15px;">
-            <a href="{{ route('admin.dashboard') }}" style="text-decoration: none; padding: 0; margin: 0;">
-                <h1 style="margin: 0; font-size: 19px;">Beauty <span>Portal</span></h1>
-            </a>
+            <div style="padding: 0; margin: 0;">
+                <h1 style="margin: 0; font-size: 19px;">BookMy<span>Beauty</span></h1>
+            </div>
             <span
                 style="background: #c9a96e; color: #1a1a2e; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 1px;">Admin
                 Console</span>

@@ -17,10 +17,9 @@
 <body>
     <!-- Navbar -->
     <nav class="navbar">
-        <a href="{{ route('home') }}" style="text-decoration: none; padding: 0; margin: 0;">
+        <div style="padding: 0; margin: 0;">
             <h1 style="margin: 0;">BookMy<span>Beauty</span></h1>
-        </a>
-
+        </div>
         <div style="display: flex; align-items: center; gap: 10px;">
             <a href="{{ route('home') }}">Home</a>
             <a href="{{ route('browse') }}">Browse Beauticians</a>
@@ -44,7 +43,8 @@
                     @csrf
                     <button type="submit" class="btn"
                         style="padding: 8px 18px; font-size: 13px; background: transparent; color: var(--accent); border: 1px solid var(--accent);">Logout
-                        ({{ Auth::user()->name }})</button>
+                        ({{ Auth::user()->name }})
+                    </button>
                 </form>
             @else
                 <a href="{{ route('login') }}" class="btn" style="padding: 8px 20px; font-size: 13px;">Login</a>

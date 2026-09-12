@@ -94,7 +94,7 @@
 <body>
     <div class="admin-card">
         <div class="logo">
-            <h2>Beauty <span>Portal</span></h2>
+            <h2>BookMy<span>Beauty</span></h2>
             <span class="admin-badge">Admin Authentication</span>
         </div>
 

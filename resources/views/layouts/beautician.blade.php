@@ -17,9 +17,9 @@
 <body>
     <nav class="navbar">
         <div style="display: flex; align-items: center; gap: 15px;">
-            <a href="{{ route('home') }}" style="text-decoration: none; padding: 0; margin: 0;">
-                <h1 style="margin: 0;">Beauty <span>Portal</span></h1>
-            </a>
+            <div style="padding: 0; margin: 0;">
+                <h1 style="margin: 0;">BookMy<span>Beauty</span></h1>
+            </div>
             <span
                 style="background: rgba(201,169,110,0.2); color: var(--accent); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 12px; text-transform: uppercase; border: 1px solid var(--accent);">Beautician
                 Studio</span>

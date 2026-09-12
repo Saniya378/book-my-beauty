@@ -16,9 +16,9 @@
 
 <body>
     <nav class="navbar">
-        <a href="{{ route('home') }}" style="text-decoration: none; padding: 0; margin: 0;">
-            <h1 style="margin: 0;">Beauty <span>Portal</span></h1>
-        </a>
+        <div style="padding: 0; margin: 0;">
+            <h1 style="margin: 0;">BookMy<span>Beauty</span></h1>
+        </div>
 
         <div style="display: flex; align-items: center; gap: 8px;">
             <a href="{{ route('browse') }}">Browse Beauticians</a>
