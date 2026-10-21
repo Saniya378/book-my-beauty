@@ -15,13 +15,18 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/about', [HomeController::class, 'about'])->name('about');
+Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
+Route::post('/contact', [HomeController::class, 'submitContact'])->name('contact.submit');
 Route::get('/browse', [Customer\BrowseController::class, 'index'])->name('browse');
 Route::get('/beautician/{id}', [Customer\BeauticianProfileController::class, 'show'])->name('beautician.view')->where('id', '[0-9]+');
 
 // Chatbot & Notifications AJAX API
 Route::post('/chatbot/message', [ChatbotController::class, 'sendMessage'])->name('chatbot.message');
+Route::post('/chatbot/transcribe', [ChatbotController::class, 'transcribeAudio'])->name('chatbot.transcribe');
 Route::get('/notifications', [NotificationController::class, 'getNotifications'])->name('notifications.get');
 Route::post('/notifications/mark-read', [NotificationController::class, 'markAllRead'])->name('notifications.mark_read');
+Route::post('/notifications/{id}/read', [NotificationController::class, 'markSingleRead'])->name('notifications.single_read');
 
 /*
 |--------------------------------------------------------------------------
@@ -99,6 +104,8 @@ Route::middleware(['auth', 'role:beautician'])->prefix('beautician')->name('beau
 
     Route::get('/profile', [Beautician\ProfileController::class, 'edit'])->name('profile');
     Route::post('/profile', [Beautician\ProfileController::class, 'update'])->name('profile.update');
+
+    Route::get('/reviews', [Beautician\ReviewController::class, 'index'])->name('reviews');
 });
 
 /*
@@ -108,6 +115,7 @@ Route::middleware(['auth', 'role:beautician'])->prefix('beautician')->name('beau
 */
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [Admin\DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/analytics', [Admin\AnalyticsController::class, 'index'])->name('analytics');
 
     Route::get('/users', [Admin\UserController::class, 'index'])->name('users');
     Route::post('/users/{id}/toggle', [Admin\UserController::class, 'toggleStatus'])->name('users.toggle');
@@ -115,5 +123,4 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/bookings', [Admin\BookingController::class, 'index'])->name('bookings');
     Route::post('/bookings/{id}/status', [Admin\BookingController::class, 'updateStatus'])->name('bookings.status');
 
-    Route::get('/analytics', [Admin\AnalyticsController::class, 'index'])->name('analytics');
 });

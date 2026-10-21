@@ -1,106 +1,74 @@
 @extends('layouts.customer')
 
-@section('title', 'My Favorites - BookMyBeauty')
-
-@section('styles')
-    <style>
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 25px;
-        }
-
-        .beautician-card {
-            background: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            overflow: hidden;
-            text-align: center;
-            transition: transform 0.3s;
-            position: relative;
-        }
-
-        .beautician-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-hover);
-        }
-
-        .card-photo-area {
-            background: linear-gradient(135deg, var(--primary), var(--primary-darker));
-            padding: 30px 20px 20px;
-            position: relative;
-        }
-
-        .card-photo-area img {
-            width: 85px;
-            height: 85px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid var(--accent);
-            background: white;
-        }
-    </style>
-@endsection
+@section('title', 'Favorites - BookMyBeauty')
 
 @section('content')
-    <div style="margin-bottom: 25px;">
-        <h2 style="font-family: 'Playfair Display', serif; font-size: 24px; color: var(--primary); margin-bottom: 4px;">My
-            Favorite Beauticians</h2>
-        <p style="color: var(--text-gray); font-size: 13px; margin: 0;">Quick access to the beauticians and stylists you love
-            most.</p>
+    <div class="page-head">
+        <div>
+            <h1 class="page-head__title">Favourite beauticians</h1>
+            <p class="page-head__sub">Quick access to the artists you love most.</p>
+        </div>
+
+        <div class="page-head__actions">
+            <a href="{{ route('browse') }}" class="btn btn--ghost">Browse more</a>
+        </div>
     </div>
 
     @if ($favorites->isEmpty())
-        <div
-            style="background: white; padding: 50px 20px; text-align: center; border-radius: var(--border-radius); box-shadow: var(--shadow);">
-            <div style="font-size: 40px; margin-bottom: 15px; color: #ef4444;">♥</div>
-            <h3 style="font-family: 'Playfair Display', serif; font-size: 20px; color: var(--primary); margin-bottom: 8px;">
-                No favorites saved yet</h3>
-            <p style="color: var(--text-gray); font-size: 13px; margin-bottom: 20px;">Browse beauticians and tap the heart
-                icon on any profile to save them here for instant booking!</p>
-            <a href="{{ route('browse') }}" class="btn" style="padding: 10px 24px; font-size: 13px;">Browse Beauticians</a>
-        </div>
+        <section class="panel">
+            <div class="empty" style="padding: 55px 20px;">
+                <span class="icon-tile" style="margin: 0 auto 16px; color: var(--bad); background: #fbeaea;">
+                    <x-icon name="heart" :size="20" />
+                </span>
+                <strong>No favourites saved yet</strong>
+                <p style="margin: 6px 0 20px;">Tap the heart on any beautician profile to keep it here.</p>
+                <a href="{{ route('browse') }}" class="btn btn--accent">Browse beauticians</a>
+            </div>
+        </section>
     @else
-        <div class="cards">
-            @foreach ($favorites as $fav)
-                @if ($fav->beautician)
-                    <div class="beautician-card" id="card-{{ $fav->beautician_id }}">
-                        <div class="card-photo-area">
-                            <img src="{{ $fav->beautician->photo_url }}"
-                                alt="{{ $fav->beautician->user->name ?? 'Beautician' }}">
-                            <button type="button" onclick="removeFavorite({{ $fav->beautician_id }})"
-                                title="Remove from favorites"
-                                style="
-                    position: absolute; top: 12px; right: 12px; background: white; border: none; border-radius: 50%;
-                    width: 32px; height: 32px; cursor: pointer; color: #ef4444; font-size: 16px; display: flex;
-                    align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
-                                ♥
-                            </button>
+        <div class="grid grid--3">
+            @foreach ($favorites as $favourite)
+                @if ($favourite->beautician)
+                    <article class="card" id="fav-{{ $favourite->beautician_id }}"
+                        style="padding: 0; overflow: hidden; text-align: center; position: relative;">
+
+                        <div style="display: flex; justify-content: center; padding: 26px 20px; background: linear-gradient(135deg, var(--primary), var(--primary-darker));">
+                            <img src="{{ $favourite->beautician->photo_url }}"
+                                alt="{{ $favourite->beautician->user?->name }}"
+                                style="width: 92px; height: 92px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent);">
                         </div>
-                        <div style="padding: 20px;">
-                            <h4
-                                style="font-family: 'Playfair Display', serif; font-size: 18px; color: var(--primary); margin-bottom: 4px;">
-                                {{ $fav->beautician->user->name ?? 'Beautician' }}</h4>
-                            <p style="font-size: 12px; color: var(--text-gray); margin-bottom: 12px;">📍
-                                {{ $fav->beautician->location ?: 'Location confirmed on booking' }}</p>
 
-                            <div
-                                style="display: flex; justify-content: center; align-items: center; gap: 5px; margin-bottom: 18px; font-size: 13px;">
-                                <span style="color: #f59e0b;">★</span>
-                                <strong>{{ number_format($fav->beautician->reviews()->avg('rating') ?: 5.0, 1) }}</strong>
-                                <span
-                                    style="color: var(--text-gray); font-size: 12px;">({{ $fav->beautician->reviews()->count() }}
-                                    reviews)</span>
-                            </div>
+                        <div style="padding: 18px 20px 22px;">
+                            <h3 style="font-family: 'Playfair Display', serif; font-size: 18px; color: var(--primary);">
+                                {{ $favourite->beautician->user?->name ?? 'Beautician' }}
+                            </h3>
 
-                            <div style="display: flex; gap: 8px;">
-                                <a href="{{ route('beautician.view', $fav->beautician_id) }}" class="btn btn-outline"
-                                    style="flex: 1; padding: 8px; font-size: 12px; text-decoration: none;">Profile</a>
-                                <a href="{{ route('customer.book', $fav->beautician_id) }}" class="btn"
-                                    style="flex: 1; padding: 8px; font-size: 12px; text-decoration: none;">Book Now</a>
+                            <p class="meta" style="justify-content: center; margin-top: 6px;">
+                                <x-icon name="map-pin" :size="13" />
+                                {{ $favourite->beautician->location ?: 'Location shared on booking' }}
+                            </p>
+
+                            <p class="meta" style="justify-content: center; margin-top: 10px;">
+                                <span class="rating">&#9733;</span>
+                                <strong style="color: var(--primary);">
+                                    {{ number_format($favourite->beautician->reviews()->avg('rating') ?: 0, 1) }}
+                                </strong>
+                                <span>({{ $favourite->beautician->reviews()->count() }} reviews)</span>
+                            </p>
+
+                            <div style="display: flex; gap: 8px; margin-top: 18px;">
+                                <a href="{{ route('beautician.view', $favourite->beautician_id) }}"
+                                    class="btn btn--ghost" style="flex: 1;">Profile</a>
+                                <a href="{{ route('customer.book', $favourite->beautician_id) }}"
+                                    class="btn" style="flex: 1;">Book now</a>
                             </div>
                         </div>
-                    </div>
+
+                        <button type="button" class="fav-remove" title="Remove from favourites"
+                            onclick="removeFavorite({{ $favourite->beautician_id }})">
+                            <x-icon name="heart" :size="16" />
+                        </button>
+                    </article>
                 @endif
             @endforeach
         </div>
@@ -110,23 +78,20 @@
 @section('scripts')
     <script>
         function removeFavorite(beauticianId) {
-            if (!confirm('Remove this beautician from your favorites?')) return;
+            if (!confirm('Remove this beautician from your favourites?')) return;
 
-            fetch("{{ route('customer.favorites.toggle') }}", {
+            fetch(@json(route('customer.favorites.toggle')), {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        'X-CSRF-TOKEN': @json(csrf_token())
                     },
-                    body: JSON.stringify({
-                        beautician_id: beauticianId
-                    })
+                    body: JSON.stringify({ beautician_id: beauticianId })
                 })
-                .then(res => res.json())
+                .then(response => response.json())
                 .then(data => {
                     if (!data.favorited) {
-                        const card = document.getElementById('card-' + beauticianId);
-                        if (card) card.remove();
+                        document.getElementById('fav-' + beauticianId)?.remove();
                     }
                 })
                 .catch(() => {});

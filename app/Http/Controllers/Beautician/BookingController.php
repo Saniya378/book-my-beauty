@@ -21,7 +21,7 @@ class BookingController extends Controller
             })
             ->orderBy('booking_date', 'desc')
             ->orderBy('booking_time', 'desc')
-            ->get();
+            ->paginate(10);
 
         return view('beautician.bookings', compact('bookings'));
     }

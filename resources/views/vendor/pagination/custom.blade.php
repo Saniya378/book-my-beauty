@@ -1,38 +1,31 @@
 @if ($paginator->hasPages())
-    <nav style="display: flex; justify-content: center; align-items: center; gap: 6px; flex-wrap: wrap; font-family: inherit;">
-
-        {{-- Previous Page Link --}}
+    <nav class="pagination">
         @if ($paginator->onFirstPage())
-            <span style="padding: 8px 14px; border-radius: 6px; font-size: 13px; color: #ccc; border: 1px solid #eee; background: #fafafa;">&laquo; Previous</span>
+            <span class="pagination__item is-disabled">Previous</span>
         @else
-            <a href="{{ $paginator->previousPageUrl() }}" style="padding: 8px 14px; border-radius: 6px; font-size: 13px; color: var(--primary); border: 1px solid var(--border); text-decoration: none;">&laquo; Previous</a>
+            <a href="{{ $paginator->previousPageUrl() }}" class="pagination__item" rel="prev">Previous</a>
         @endif
 
-        {{-- Pagination Elements --}}
         @foreach ($elements as $element)
-            {{-- "Three Dots" Separator --}}
             @if (is_string($element))
-                <span style="padding: 8px 12px; font-size: 13px; color: #999;">{{ $element }}</span>
+                <span class="pagination__dots">{{ $element }}</span>
             @endif
 
-            {{-- Array Of Links --}}
             @if (is_array($element))
                 @foreach ($element as $page => $url)
                     @if ($page == $paginator->currentPage())
-                        <span style="padding: 8px 13px; border-radius: 6px; font-size: 13px; font-weight: 700; background: var(--primary); color: white;">{{ $page }}</span>
+                        <span class="pagination__item is-current">{{ $page }}</span>
                     @else
-                        <a href="{{ $url }}" style="padding: 8px 13px; border-radius: 6px; font-size: 13px; color: var(--primary); border: 1px solid var(--border); text-decoration: none;">{{ $page }}</a>
+                        <a href="{{ $url }}" class="pagination__item">{{ $page }}</a>
                     @endif
                 @endforeach
             @endif
         @endforeach
 
-        {{-- Next Page Link --}}
         @if ($paginator->hasMorePages())
-            <a href="{{ $paginator->nextPageUrl() }}" style="padding: 8px 14px; border-radius: 6px; font-size: 13px; color: var(--primary); border: 1px solid var(--border); text-decoration: none;">Next &raquo;</a>
+            <a href="{{ $paginator->nextPageUrl() }}" class="pagination__item" rel="next">Next</a>
         @else
-            <span style="padding: 8px 14px; border-radius: 6px; font-size: 13px; color: #ccc; border: 1px solid #eee; background: #fafafa;">Next &raquo;</span>
+            <span class="pagination__item is-disabled">Next</span>
         @endif
-
     </nav>
 @endif

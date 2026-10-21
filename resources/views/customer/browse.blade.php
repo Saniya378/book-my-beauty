@@ -2,259 +2,118 @@
 
 @section('title', 'Browse Beauticians - BookMyBeauty')
 
-@section('styles')
-    <style>
-        .page-header {
-            margin-bottom: 25px;
-        }
-
-        .page-header h2 {
-            font-size: 26px;
-            color: var(--primary);
-            font-weight: 700;
-            font-family: 'Playfair Display', serif;
-        }
-
-        .page-header p {
-            color: var(--text-gray);
-            font-size: 13px;
-            margin-top: 4px;
-        }
-
-        .search-box {
-            background: white;
-            padding: 24px;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            margin-bottom: 30px;
-        }
-
-        .search-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
-            align-items: flex-end;
-        }
-
-        .search-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .search-group label {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-dark);
-            margin-bottom: 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .search-group input,
-        .search-group select {
-            padding: 10px 12px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 13px;
-            font-family: inherit;
-            outline: none;
-        }
-
-        .search-group input:focus,
-        .search-group select:focus {
-            border-color: var(--accent);
-        }
-
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 25px;
-        }
-
-        .beautician-card {
-            background: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            overflow: hidden;
-            transition: all 0.3s ease;
-            text-align: center;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .beautician-card:hover {
-            transform: translateY(-6px);
-            box-shadow: var(--shadow-hover);
-        }
-
-        .card-photo-area {
-            background: linear-gradient(135deg, var(--primary), var(--primary-darker));
-            padding: 30px 20px 20px;
-            position: relative;
-        }
-
-        .card-photo-area img {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid var(--accent);
-            background: white;
-        }
-
-        .fav-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            border-radius: 50%;
-            width: 36px;
-            height: 36px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 18px;
-            transition: background 0.2s, transform 0.2s;
-        }
-
-        .fav-btn:hover {
-            transform: scale(1.1);
-            background: rgba(255, 255, 255, 0.35);
-        }
-
-        .fav-btn.active {
-            color: #ef4444;
-            background: white;
-        }
-    </style>
-@endsection
-
 @section('content')
-    <div style="max-width: 1200px; margin: 30px auto; padding: 0 20px;">
-        <div class="page-header">
-            <h2>Browse Expert Beauticians</h2>
-            <p>Explore top professionals, read authentic reviews, check availability, and book online.</p>
-        </div>
-
-        <!-- Search / Filter Form -->
-        <div class="search-box">
-            <form action="{{ route('browse') }}" method="GET">
-                <div class="search-grid">
-                    <div class="search-group" style="grid-column: span 1;">
-                        <label for="search">Keywords</label>
-                        <input type="text" id="search" name="search" value="{{ $search }}"
-                            placeholder="Beautician name...">
-                    </div>
-
-                    <div class="search-group">
-                        <label for="location">Location</label>
-                        <input type="text" id="location" name="location" value="{{ $location }}"
-                            placeholder="e.g. Gilgit, Lahore...">
-                    </div>
-
-                    <div class="search-group">
-                        <label for="service">Service</label>
-                        <input type="text" id="service" name="service" value="{{ $service }}"
-                            placeholder="e.g. Hair, Facial...">
-                    </div>
-
-                    <div class="search-group">
-                        <label for="min_price">Min Price (Rs.)</label>
-                        <input type="number" id="min_price" name="min_price" value="{{ request('min_price') }}"
-                            placeholder="0">
-                    </div>
-
-                    <div class="search-group">
-                        <label for="max_price">Max Price (Rs.)</label>
-                        <input type="number" id="max_price" name="max_price" value="{{ request('max_price') }}"
-                            placeholder="Any">
-                    </div>
-
-                    <div class="search-group">
-                        <label for="rating">Min Rating</label>
-                        <select id="rating" name="rating">
-                            <option value="">Any Rating</option>
-                            <option value="5" {{ $minRating == 5 ? 'selected' : '' }}>5 Stars ★★★★★</option>
-                            <option value="4" {{ $minRating == 4 ? 'selected' : '' }}>4+ Stars ★★★★☆</option>
-                            <option value="3" {{ $minRating == 3 ? 'selected' : '' }}>3+ Stars ★★★☆☆</option>
-                        </select>
-                    </div>
-
-                    <div style="display: flex; gap: 8px;">
-                        <button type="submit" class="btn"
-                            style="flex: 1; padding: 10px; font-size: 13px; border-radius: 8px;">Apply Filters</button>
-                        <a href="{{ route('browse') }}" class="btn btn-outline"
-                            style="padding: 10px 14px; font-size: 13px; border-radius: 8px; text-decoration: none;">Reset</a>
-                    </div>
-                </div>
-            </form>
-        </div>
-
-        <!-- Beauticians Results -->
-        @if ($beauticians->isEmpty())
-            <div
-                style="background: white; padding: 50px; text-align: center; border-radius: var(--border-radius); box-shadow: var(--shadow);">
-                <div style="font-size: 40px; margin-bottom: 15px;">🔍</div>
-                <h3
-                    style="font-family: 'Playfair Display', serif; font-size: 20px; color: var(--primary); margin-bottom: 8px;">
-                    No beauticians found</h3>
-                <p style="color: var(--text-gray); font-size: 13px; margin-bottom: 20px;">Try adjusting your filters or
-                    search terms to find available professionals.</p>
-                <a href="{{ route('browse') }}" class="btn" style="padding: 9px 22px; font-size: 13px;">View All
-                    Beauticians</a>
+    <div class="portal">
+        <div class="page-head">
+            <div>
+                <h1 class="page-head__title">Browse beauticians</h1>
+                <p class="page-head__sub">Compare artists, read real reviews and check live availability.</p>
             </div>
+        </div>
+
+        <form action="{{ route('browse') }}" method="GET" class="filters" style="align-items: flex-end;">
+            <div class="field" style="flex: 1 1 200px; margin: 0;">
+                <label for="search">Keywords</label>
+                <input type="text" id="search" name="search" value="{{ $search }}" placeholder="Beautician name">
+            </div>
+
+            <div class="field" style="flex: 1 1 180px; margin: 0;">
+                <label for="location">Location</label>
+                <input type="text" id="location" name="location" value="{{ $location }}" placeholder="Gilgit, Lahore">
+            </div>
+
+            <div class="field" style="flex: 1 1 180px; margin: 0;">
+                <label for="service">Service</label>
+                <input type="text" id="service" name="service" value="{{ $service }}" placeholder="Hair, facial">
+            </div>
+
+            <div class="field" style="flex: 0 1 130px; margin: 0;">
+                <label for="min_price">Min price</label>
+                <input type="number" id="min_price" name="min_price" value="{{ request('min_price') }}"
+                    placeholder="0">
+            </div>
+
+            <div class="field" style="flex: 0 1 130px; margin: 0;">
+                <label for="max_price">Max price</label>
+                <input type="number" id="max_price" name="max_price" value="{{ request('max_price') }}"
+                    placeholder="Any">
+            </div>
+
+            <div class="field" style="flex: 0 1 170px; margin: 0;">
+                <label for="rating">Minimum rating</label>
+                <select id="rating" name="rating">
+                    <option value="">Any rating</option>
+                    <option value="5" {{ $minRating == 5 ? 'selected' : '' }}>5 stars</option>
+                    <option value="4" {{ $minRating == 4 ? 'selected' : '' }}>4 stars and above</option>
+                    <option value="3" {{ $minRating == 3 ? 'selected' : '' }}>3 stars and above</option>
+                </select>
+            </div>
+
+            <div style="display: flex; gap: 8px; flex: 0 0 auto;">
+                <button type="submit" class="btn">
+                    <x-icon name="search" :size="15" />
+                    Apply
+                </button>
+                <a href="{{ route('browse') }}" class="btn btn--ghost">Reset</a>
+            </div>
+        </form>
+
+        @if ($beauticians->isEmpty())
+            <section class="panel">
+                <div class="empty" style="padding: 55px 20px;">
+                    <span class="icon-tile" style="margin: 0 auto 16px;"><x-icon name="search" :size="20" /></span>
+                    <strong>No beauticians match those filters</strong>
+                    <p style="margin: 6px 0 20px;">Try a different city, service or a wider price range.</p>
+                    <a href="{{ route('browse') }}" class="btn btn--accent">Clear all filters</a>
+                </div>
+            </section>
         @else
-            <div class="cards-grid">
-                @foreach ($beauticians as $b)
-                    <div class="beautician-card">
-                        <div class="card-photo-area">
-                            <img src="{{ $b->photo_url }}" alt="{{ $b->user->name }}">
+            <div class="grid grid--3">
+                @foreach ($beauticians as $beautician)
+                    <article class="card" style="padding: 0; overflow: hidden; text-align: center; position: relative;">
 
-                            @auth
-                                @if (Auth::user()->role === 'customer')
-                                    <button type="button"
-                                        class="fav-btn {{ in_array($b->id, $favoritedIds) ? 'active' : '' }}"
-                                        onclick="toggleFavorite(this, {{ $b->id }})" title="Save to Favorites">
-                                        ♥
-                                    </button>
-                                @endif
-                            @endauth
+                        <div style="display: flex; justify-content: center; padding: 28px 20px; background: linear-gradient(135deg, var(--primary), var(--primary-darker));">
+                            <img src="{{ $beautician->photo_url }}" alt="{{ $beautician->user->name }}"
+                                style="width: 92px; height: 92px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent);">
                         </div>
 
-                        <div
-                            style="padding: 22px 20px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
-                            <div>
-                                <h4
-                                    style="font-family: 'Playfair Display', serif; font-size: 19px; color: var(--primary); margin-bottom: 5px;">
-                                    {{ $b->user->name }}</h4>
-                                <p style="font-size: 12px; color: var(--text-gray); margin-bottom: 12px;">📍
-                                    {{ $b->location ?: 'Location available upon booking' }}</p>
+                        <div style="padding: 20px;">
+                            <h3 style="font-family: 'Playfair Display', serif; font-size: 18px; color: var(--primary);">
+                                {{ $beautician->user->name }}
+                            </h3>
 
-                                <div
-                                    style="display: flex; justify-content: center; align-items: center; gap: 6px; margin-bottom: 15px; font-size: 13px;">
-                                    <span style="color: #f59e0b;">★</span>
-                                    <strong>{{ number_format($b->reviews_avg_rating ?: 5.0, 1) }}</strong>
-                                    <span style="color: var(--text-gray); font-size: 12px;">({{ $b->reviews_count }}
-                                        reviews)</span>
-                                </div>
+                            <p class="meta" style="justify-content: center; margin-top: 6px;">
+                                <x-icon name="map-pin" :size="13" />
+                                {{ $beautician->location ?: 'Location shared on booking' }}
+                            </p>
 
-                                <p
-                                    style="font-size: 12px; color: #666; line-height: 1.5; margin-bottom: 15px; min-height: 36px;">
-                                    {{ Str::limit($b->bio ?: 'Dedicated beauty professional offering exceptional styling and care.', 70) }}
-                                </p>
-                            </div>
+                            <p class="meta" style="justify-content: center; margin-top: 10px;">
+                                <span class="rating">&#9733;</span>
+                                <strong style="color: var(--primary);">
+                                    {{ number_format($beautician->reviews_avg_rating ?: 0, 1) }}
+                                </strong>
+                                <span>({{ $beautician->reviews_count }} reviews)</span>
+                            </p>
 
-                            <div style="margin-top: 10px;">
-                                <a href="{{ route('beautician.view', $b->id) }}" class="btn"
-                                    style="width: 100%; padding: 10px; font-size: 13px; text-decoration: none; display: block; border-radius: 6px;">View
-                                    Profile & Services</a>
-                            </div>
+                            <p style="margin-top: 14px; font-size: 12px; line-height: 1.6; color: #666; min-height: 38px;">
+                                {{ Str::limit($beautician->bio ?: 'Dedicated beauty professional offering styling and care.', 72) }}
+                            </p>
+
+                            <a href="{{ route('beautician.view', $beautician->id) }}" class="btn btn--block"
+                                style="margin-top: 16px;">
+                                View profile &amp; services
+                            </a>
                         </div>
-                    </div>
+
+                        @auth
+                            @if (Auth::user()->role === 'customer')
+                                <button type="button" class="fav-btn {{ in_array($beautician->id, $favoritedIds) ? 'is-on' : '' }}"
+                                    onclick="toggleFavorite(this, {{ $beautician->id }})" title="Save to favourites">
+                                    <x-icon name="heart" :size="17" />
+                                </button>
+                            @endif
+                        @endauth
+                    </article>
                 @endforeach
             </div>
         @endif
@@ -263,25 +122,17 @@
 
 @section('scripts')
     <script>
-        function toggleFavorite(btn, beauticianId) {
-            fetch("{{ route('customer.favorites.toggle') }}", {
+        function toggleFavorite(button, beauticianId) {
+            fetch(@json(route('customer.favorites.toggle')), {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        'X-CSRF-TOKEN': @json(csrf_token())
                     },
-                    body: JSON.stringify({
-                        beautician_id: beauticianId
-                    })
+                    body: JSON.stringify({ beautician_id: beauticianId })
                 })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.favorited) {
-                        btn.classList.add('active');
-                    } else {
-                        btn.classList.remove('active');
-                    }
-                })
+                .then(response => response.json())
+                .then(data => button.classList.toggle('is-on', Boolean(data.favorited)))
                 .catch(() => {});
         }
     </script>

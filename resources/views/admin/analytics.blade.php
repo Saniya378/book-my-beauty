@@ -1,186 +1,312 @@
 @extends('layouts.admin')
 
-@section('title', 'Platform Analytics - Admin Console')
-
-@section('styles')
-<style>
-    .chart-card {
-        background: white;
-        border-radius: var(--border-radius);
-        padding: 24px;
-        box-shadow: var(--shadow);
-    }
-    .chart-card h3 {
-        font-family: 'Playfair Display', serif;
-        font-size: 18px;
-        color: var(--primary);
-        margin-bottom: 5px;
-    }
-    .chart-card p {
-        font-size: 12px;
-        color: var(--text-gray);
-        margin-bottom: 20px;
-    }
-</style>
-@endsection
+@section('title', 'Analytics - Admin Console')
 
 @section('content')
-<div style="background: linear-gradient(135deg, var(--primary), var(--primary-darker)); color: white; padding: 25px 30px; border-radius: var(--border-radius); margin-bottom: 25px; border-bottom: 3px solid var(--accent); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
-    <div>
-        <h2 style="font-family: 'Playfair Display', serif; font-size: 22px; margin-bottom: 4px;">Platform Performance & Analytics</h2>
-        <p style="font-size: 13px; opacity: 0.85; margin: 0;">Visual insights into revenue trends, top performing artists, in-demand services, and appointment conversion.</p>
-    </div>
-</div>
+    <div class="admin-head">
+        <div>
+            <h1 class="admin-head__title">Analytics</h1>
+            <p class="admin-head__subtitle">Revenue, demand and booking outcomes for the last six months</p>
+        </div>
 
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(480px, 1fr)); gap: 25px;">
-    <!-- 1. Revenue Trend Line Chart -->
-    <div class="chart-card">
-        <h3>6-Month Revenue Trend</h3>
-        <p>Confirmed booking earnings over the past 6 months (PKR)</p>
-        <div style="position: relative; height: 260px;">
-            <canvas id="revenueChart"></canvas>
+        <div class="admin-head__actions">
+            <a href="{{ route('admin.dashboard') }}" class="btn btn--ghost">
+                <x-icon name="trend" :size="15" />
+                Back to dashboard
+            </a>
         </div>
     </div>
 
-    <!-- 2. Booking Status Doughnut Chart -->
-    <div class="chart-card">
-        <h3>Booking Distribution</h3>
-        <p>Breakdown by appointment status (pending, confirmed, cancelled)</p>
-        <div style="position: relative; height: 260px;">
-            <canvas id="statusChart"></canvas>
+    <div class="kpi-grid">
+        <div class="kpi">
+            <span class="kpi__icon"><x-icon name="revenue" :size="19" /></span>
+            <div>
+                <div class="kpi__value">Rs. {{ number_format($periodRevenue, 0) }}</div>
+                <div class="kpi__label">Revenue in period</div>
+                <div class="kpi__note">Confirmed bookings only</div>
+            </div>
+        </div>
+
+        <div class="kpi">
+            <span class="kpi__icon"><x-icon name="bookings" :size="19" /></span>
+            <div>
+                <div class="kpi__value">{{ $periodBookings }}</div>
+                <div class="kpi__label">Bookings in period</div>
+                <div class="kpi__note">{{ $periodConfirmed }} of them confirmed</div>
+            </div>
+        </div>
+
+        <div class="kpi">
+            <span class="kpi__icon"><x-icon name="services" :size="19" /></span>
+            <div>
+                <div class="kpi__value">Rs. {{ number_format($averageBookingValue, 0) }}</div>
+                <div class="kpi__label">Average booking value</div>
+                <div class="kpi__note">Per confirmed appointment</div>
+            </div>
+        </div>
+
+        <div class="kpi">
+            <span class="kpi__icon"><x-icon name="pending" :size="19" /></span>
+            <div>
+                <div class="kpi__value">{{ $completionRate }}%</div>
+                <div class="kpi__label">Confirmation rate</div>
+                <div class="kpi__note">Share of bookings that completed</div>
+            </div>
         </div>
     </div>
 
-    <!-- 3. Top 5 Services Bar Chart -->
-    <div class="chart-card">
-        <h3>Top 5 Booked Services</h3>
-        <p>Most popular treatments and salon services by booking volume</p>
-        <div style="position: relative; height: 260px;">
-            <canvas id="servicesChart"></canvas>
-        </div>
+    <div class="admin-grid admin-grid--split">
+        <section class="panel">
+            <div class="panel__head">
+                <div>
+                    <h2 class="panel__title">Revenue and booking volume</h2>
+                    <p class="panel__meta">Confirmed earnings against number of appointments per month</p>
+                </div>
+            </div>
+
+            <div class="panel__body">
+                <div class="chart">
+                    <canvas id="revenueChart"></canvas>
+                </div>
+
+                <div class="legend">
+                    <span class="legend__item">
+                        <span class="legend__dot" style="background: #2d3561"></span>
+                        Confirmed revenue
+                    </span>
+                    <span class="legend__item">
+                        <span class="legend__dot legend__dot--line" style="background: #c9992b"></span>
+                        Bookings
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="panel__head">
+                <div>
+                    <h2 class="panel__title">Booking status split</h2>
+                    <p class="panel__meta">All {{ $totalBookings }} bookings ever made</p>
+                </div>
+            </div>
+
+            <div class="panel__body">
+                <div class="chart chart--short">
+                    <canvas id="statusChart"></canvas>
+                </div>
+
+                <div class="legend">
+                    @foreach ([
+                        ['Confirmed', $confirmed, '#2e6b34'],
+                        ['Pending', $pending, '#c9992b'],
+                        ['Cancelled', $cancelled, '#a63b3b'],
+                    ] as [$label, $value, $color])
+                        <span class="legend__item">
+                            <span class="legend__dot" style="background: {{ $color }}"></span>
+                            {{ $label }}
+                            <strong>{{ $value }}</strong>
+                            <span>{{ $totalBookings ? round($value / $totalBookings * 100) : 0 }}%</span>
+                        </span>
+                    @endforeach
+                </div>
+            </div>
+        </section>
     </div>
 
-    <!-- 4. Top Beauticians Horizontal Bar Chart -->
-    <div class="chart-card">
-        <h3>Top Beauticians by Earnings</h3>
-        <p>Highest grossing verified salon artists on the platform (PKR)</p>
-        <div style="position: relative; height: 260px;">
-            <canvas id="beauticiansChart"></canvas>
-        </div>
+    <div class="admin-grid admin-grid--even">
+        <section class="panel">
+            <div class="panel__head">
+                <div>
+                    <h2 class="panel__title">Most booked services</h2>
+                    <p class="panel__meta">Top five by number of appointments</p>
+                </div>
+            </div>
+
+            <div class="panel__body">
+                <div class="chart chart--short">
+                    <canvas id="servicesChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="panel__head">
+                <div>
+                    <h2 class="panel__title">Top earning beauticians</h2>
+                    <p class="panel__meta">Confirmed revenue earned per stylist</p>
+                </div>
+            </div>
+
+            <div class="panel__body">
+                <div class="chart chart--short">
+                    <canvas id="beauticiansChart"></canvas>
+                </div>
+            </div>
+        </section>
     </div>
-</div>
+
+    <section class="panel">
+        <div class="panel__head">
+            <div>
+                <h2 class="panel__title">Month by month</h2>
+                <p class="panel__meta">The same figures behind the charts above</p>
+            </div>
+        </div>
+
+        <div class="panel__body panel__body--flush">
+            <div class="table-scroll">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Month</th>
+                            <th>Bookings</th>
+                            <th>Confirmed revenue</th>
+                            <th>Average booking</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($report as $row)
+                            <tr>
+                                <td>{{ $row['label'] }}</td>
+                                <td>{{ $row['bookings'] }}</td>
+                                <td>Rs. {{ number_format($row['revenue'], 0) }}</td>
+                                <td>Rs. {{ number_format($row['average'], 0) }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td><strong>Total</strong></td>
+                            <td><strong>{{ $periodBookings }}</strong></td>
+                            <td><strong>Rs. {{ number_format($periodRevenue, 0) }}</strong></td>
+                            <td><strong>Rs. {{ number_format($averageBookingValue, 0) }}</strong></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </section>
 @endsection
 
 @section('scripts')
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // 1. Revenue Chart
-    new Chart(document.getElementById('revenueChart'), {
-        type: 'line',
-        data: {
-            labels: {!! json_encode($revenueLabels) !!},
-            datasets: [{
-                label: 'Revenue (Rs.)',
-                data: {!! json_encode($revenueValues) !!},
-                borderColor: '#c9a96e',
-                backgroundColor: 'rgba(201, 169, 110, 0.15)',
-                borderWidth: 3,
-                fill: true,
-                tension: 0.35,
-                pointBackgroundColor: '#1a1a2e',
-                pointBorderColor: '#c9a96e',
-                pointRadius: 5
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: { callback: val => 'Rs. ' + Number(val).toLocaleString() }
-                }
-            }
-        }
-    });
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
-    // 2. Status Breakdown Doughnut
-    new Chart(document.getElementById('statusChart'), {
-        type: 'doughnut',
-        data: {
-            labels: ['Confirmed', 'Pending', 'Cancelled'],
-            datasets: [{
-                data: [
-                    {{ $statusCounts['confirmed'] }},
-                    {{ $statusCounts['pending'] }},
-                    {{ $statusCounts['cancelled'] }}
+    <script>
+        const revenue = @json($revenueSeries);
+        const bookings = @json($bookingSeries);
+
+        Chart.defaults.font.family = "'Poppins', sans-serif";
+        Chart.defaults.font.size = 11;
+        Chart.defaults.color = '#777777';
+
+        const grid = { color: '#f1f1f1', drawTicks: false };
+        const noBorder = { grid: { display: false }, border: { display: false } };
+
+        new Chart(document.getElementById('revenueChart'), {
+            data: {
+                labels: @json($labels),
+                datasets: [
+                    {
+                        type: 'bar',
+                        label: 'Revenue (Rs.)',
+                        data: revenue,
+                        backgroundColor: '#2d3561',
+                        borderRadius: 3,
+                        maxBarThickness: 42,
+                        yAxisID: 'y',
+                    },
+                    {
+                        type: 'line',
+                        label: 'Bookings',
+                        data: bookings,
+                        borderColor: '#c9992b',
+                        backgroundColor: '#c9992b',
+                        borderWidth: 2,
+                        tension: 0,
+                        pointRadius: 3,
+                        yAxisID: 'y1',
+                    },
                 ],
-                backgroundColor: ['#2e7d32', '#b78103', '#c62828'],
-                borderWidth: 2,
-                borderColor: '#ffffff'
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { position: 'bottom' }
-            }
-        }
-    });
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { mode: 'index', intersect: false },
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: {
+                        position: 'left',
+                        grid: grid,
+                        border: { display: false },
+                        ticks: { callback: (value) => 'Rs. ' + value.toLocaleString() },
+                    },
+                    y1: {
+                        position: 'right',
+                        grid: { drawOnChartArea: false },
+                        border: { display: false },
+                        ticks: { precision: 0 },
+                    },
+                    x: { ...noBorder },
+                },
+            },
+        });
 
-    // 3. Top Services Bar Chart
-    new Chart(document.getElementById('servicesChart'), {
-        type: 'bar',
-        data: {
-            labels: {!! json_encode($topServicesLabels) !!},
-            datasets: [{
-                label: 'Bookings',
-                data: {!! json_encode($topServicesValues) !!},
-                backgroundColor: '#1a1a2e',
-                borderColor: '#c9a96e',
-                borderWidth: 1,
-                borderRadius: 6
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: {
-                y: { beginAtZero: true, ticks: { stepSize: 1 } }
-            }
-        }
-    });
+        new Chart(document.getElementById('statusChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Confirmed', 'Pending', 'Cancelled'],
+                datasets: [
+                    {
+                        data: [@json($confirmed), @json($pending), @json($cancelled)],
+                        backgroundColor: ['#2e6b34', '#c9992b', '#a63b3b'],
+                        borderColor: '#ffffff',
+                        borderWidth: 2,
+                    },
+                ],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '68%',
+                plugins: { legend: { display: false } },
+            },
+        });
 
-    // 4. Top Beauticians Horizontal Bar Chart
-    new Chart(document.getElementById('beauticiansChart'), {
-        type: 'bar',
-        data: {
-            labels: {!! json_encode($topBeauticiansLabels) !!},
-            datasets: [{
-                label: 'Gross Revenue (Rs.)',
-                data: {!! json_encode($topBeauticiansValues) !!},
-                backgroundColor: '#0f3460',
-                borderColor: '#c9a96e',
-                borderWidth: 1,
-                borderRadius: 6
-            }]
-        },
-        options: {
-            indexAxis: 'y',
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: {
-                x: {
-                    beginAtZero: true,
-                    ticks: { callback: val => 'Rs. ' + Number(val).toLocaleString() }
-                }
-            }
+        function rankedBar(canvasId, labels, values, color, prefix) {
+            new Chart(document.getElementById(canvasId), {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            data: values,
+                            backgroundColor: color,
+                            borderRadius: 3,
+                            maxBarThickness: 22,
+                        },
+                    ],
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: (context) => prefix + context.parsed.x.toLocaleString(),
+                            },
+                        },
+                    },
+                    scales: {
+                        x: { grid: grid, border: { display: false } },
+                        y: { ...noBorder },
+                    },
+                },
+            });
         }
-    });
-});
-</script>
+
+        rankedBar('servicesChart', @json($topServices->pluck('service_name')), @json($topServices->pluck('bookings_count')), '#2d3561', 'Bookings: ');
+        rankedBar('beauticiansChart', @json($topEarners->pluck('name')), @json($topEarners->map(fn ($earner) => (float) $earner->revenue)), '#c9992b', 'Rs. ');
+    </script>
 @endsection

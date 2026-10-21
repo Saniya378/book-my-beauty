@@ -3,93 +3,131 @@
 @section('title', 'Review ' . $beautician->user->name)
 
 @section('styles')
-<style>
-    .star-rating {
-        display: inline-flex;
-        flex-direction: row-reverse;
-        gap: 6px;
-        font-size: 28px;
-        cursor: pointer;
-    }
-    .star-rating input { display: none; }
-    .star-rating label { color: #ddd; transition: color 0.2s; }
-    .star-rating label:hover,
-    .star-rating label:hover ~ label,
-    .star-rating input:checked ~ label {
-        color: #f59e0b;
-    }
-</style>
+    <style>
+        .star-rating {
+            display: inline-flex;
+            flex-direction: row-reverse;
+            gap: 6px;
+            font-size: 26px;
+            line-height: 1;
+            cursor: pointer;
+        }
+
+        .star-rating input {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .star-rating label {
+            margin: 0;
+            color: #dcdce4;
+            letter-spacing: 0;
+            text-transform: none;
+            transition: color 0.2s;
+        }
+
+        .star-rating label:hover,
+        .star-rating label:hover~label,
+        .star-rating input:checked~label {
+            color: #d9a441;
+        }
+    </style>
 @endsection
 
 @section('content')
-<div style="max-width: 750px; margin: 20px auto;">
-    <div style="background: white; border-radius: var(--border-radius); box-shadow: var(--shadow); overflow: hidden; margin-bottom: 30px;">
-        <div style="background: linear-gradient(135deg, var(--primary), var(--primary-darker)); padding: 25px 30px; color: white; display: flex; align-items: center; justify-content: space-between; border-bottom: 3px solid var(--accent);">
+    <div style="max-width: 760px; margin: 0 auto;">
+        <div class="page-head">
             <div>
-                <h2 style="font-family: 'Playfair Display', serif; font-size: 22px; margin-bottom: 4px;">Rate & Review</h2>
-                <p style="font-size: 13px; opacity: 0.85; margin: 0;">Beautician: <strong>{{ $beautician->user->name }}</strong></p>
+                <h1 class="page-head__title">Rate &amp; review</h1>
+                <p class="page-head__sub">Your feedback for {{ $beautician->user->name }}</p>
             </div>
-            <a href="{{ route('beautician.view', $beautician->id) }}" style="color: var(--accent); font-size: 12px; text-decoration: none;">&larr; View Profile</a>
+
+            <div class="page-head__actions">
+                <a href="{{ route('beautician.view', $beautician->id) }}" class="btn btn--ghost">
+                    <x-icon name="arrow-left" :size="15" />
+                    View profile
+                </a>
+            </div>
         </div>
 
-        <div style="padding: 30px;">
-            @if($existingReview)
-                <div style="background: #e8f5e9; border-left: 4px solid #2e7d32; padding: 16px 20px; border-radius: 8px; margin-bottom: 20px;">
-                    <h4 style="color: #2e7d32; margin-bottom: 6px; font-size: 14px;">You have already reviewed this beautician</h4>
-                    <div style="color: #f59e0b; font-size: 18px; margin-bottom: 8px;">
-                        @for($i = 1; $i <= 5; $i++)
-                            {{ $i <= $existingReview->rating ? '★' : '☆' }}
-                        @endfor
+        <section class="panel" style="margin-bottom: 22px;">
+            <div class="panel__body">
+                @if ($existingReview)
+                    <div class="notice notice--ok" style="margin-bottom: 18px;">
+                        <span class="notice__icon"><x-icon name="check-circle" :size="17" /></span>
+                        <span>
+                            <strong>You already reviewed this beautician.</strong>
+                            <span class="rating">
+                                @for ($star = 1; $star <= 5; $star++)
+                                    {!! $star <= $existingReview->rating ? '&#9733;' : '&#9734;' !!}
+                                @endfor
+                            </span>
+                            <br>{{ $existingReview->comment }}
+                        </span>
                     </div>
-                    <p style="font-size: 13px; color: #333; margin: 0;">"{{ $existingReview->comment }}"</p>
-                </div>
-            @else
-                <form action="{{ route('customer.review.store', $beautician->id) }}" method="POST">
-                    @csrf
+                @else
+                    <form action="{{ route('customer.review.store', $beautician->id) }}" method="POST">
+                        @csrf
 
-                    <div style="margin-bottom: 20px;">
-                        <label style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px;">Your Rating</label>
-                        <div class="star-rating">
-                            <input type="radio" id="star5" name="rating" value="5" required><label for="star5" title="5 stars">★</label>
-                            <input type="radio" id="star4" name="rating" value="4"><label for="star4" title="4 stars">★</label>
-                            <input type="radio" id="star3" name="rating" value="3"><label for="star3" title="3 stars">★</label>
-                            <input type="radio" id="star2" name="rating" value="2"><label for="star2" title="2 stars">★</label>
-                            <input type="radio" id="star1" name="rating" value="1"><label for="star1" title="1 star">★</label>
+                        <div class="field">
+                            <label>Your rating</label>
+                            <div class="star-rating">
+                                <input type="radio" id="star5" name="rating" value="5" required>
+                                <label for="star5" title="5 stars">&#9733;</label>
+                                <input type="radio" id="star4" name="rating" value="4">
+                                <label for="star4" title="4 stars">&#9733;</label>
+                                <input type="radio" id="star3" name="rating" value="3">
+                                <label for="star3" title="3 stars">&#9733;</label>
+                                <input type="radio" id="star2" name="rating" value="2">
+                                <label for="star2" title="2 stars">&#9733;</label>
+                                <input type="radio" id="star1" name="rating" value="1">
+                                <label for="star1" title="1 star">&#9733;</label>
+                            </div>
                         </div>
-                    </div>
 
-                    <div style="margin-bottom: 25px;">
-                        <label for="comment" style="display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px;">Your Comments & Feedback</label>
-                        <textarea id="comment" name="comment" rows="4" required placeholder="Share details of your experience, styling quality, punctuality..." style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 13px; outline: none;"></textarea>
-                    </div>
+                        <div class="field">
+                            <label for="comment">Your comments</label>
+                            <textarea id="comment" name="comment" rows="4" required
+                                placeholder="Share the styling quality, punctuality and overall experience..."></textarea>
+                        </div>
 
-                    <button type="submit" class="btn" style="padding: 12px 30px; font-size: 14px; font-weight: 600;">Submit Review</button>
-                </form>
-            @endif
-        </div>
-    </div>
+                        <button type="submit" class="btn btn--accent">Submit review</button>
+                    </form>
+                @endif
+            </div>
+        </section>
 
-    <!-- Prior Reviews List -->
-    <h3 style="font-family: 'Playfair Display', serif; font-size: 20px; color: var(--primary); margin-bottom: 15px;">Customer Reviews ({{ $beautician->reviews->count() }})</h3>
-    <div style="display: flex; flex-direction: column; gap: 12px;">
-        @forelse($beautician->reviews as $r)
-        <div style="background: white; padding: 18px 22px; border-radius: var(--border-radius); box-shadow: var(--shadow);">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                <strong>{{ $r->customer->name ?? 'Verified Client' }}</strong>
-                <div style="color: #f59e0b; font-size: 14px;">
-                    @for($i = 1; $i <= 5; $i++)
-                        {{ $i <= $r->rating ? '★' : '☆' }}
-                    @endfor
+        <section class="panel">
+            <div class="panel__head">
+                <div>
+                    <h2 class="panel__title">Customer reviews</h2>
+                    <p class="panel__meta">{{ $beautician->reviews->count() }} review{{ $beautician->reviews->count() === 1 ? '' : 's' }} so far</p>
                 </div>
             </div>
-            <p style="font-size: 13px; color: #444; line-height: 1.5; margin: 0 0 6px;">{{ $r->comment }}</p>
-            <span style="font-size: 11px; color: var(--text-gray);">{{ $r->created_at ? $r->created_at->format('d M Y') : '' }}</span>
-        </div>
-        @empty
-        <div style="background: white; padding: 25px; text-align: center; border-radius: 8px; color: #888; font-size: 13px;">
-            No other reviews yet.
-        </div>
-        @endforelse
+
+            <div class="panel__body panel__body--flush">
+                <ul class="rows">
+                    @forelse ($beautician->reviews as $review)
+                        <li class="rows--stacked">
+                            <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%;">
+                                <span class="rows__title">{{ $review->customer?->name ?? 'Verified customer' }}</span>
+                                <span class="rating">
+                                    @for ($star = 1; $star <= 5; $star++)
+                                        {!! $star <= $review->rating ? '&#9733;' : '&#9734;' !!}
+                                    @endfor
+                                </span>
+                            </div>
+
+                            <p class="rows__note">{{ $review->comment }}</p>
+                            <span class="rows__meta">{{ $review->created_at?->format('j M Y') }}</span>
+                        </li>
+                    @empty
+                        <li class="empty">No reviews yet, be the first.</li>
+                    @endforelse
+                </ul>
+            </div>
+        </section>
     </div>
-</div>
 @endsection

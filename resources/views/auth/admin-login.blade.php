@@ -1,127 +1,73 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.auth')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login - BookMyBeauty</title>
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap"
-        rel="stylesheet">
-    <style>
-        body {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            background: #0d0f1a;
-            margin: 0;
-            font-family: 'Poppins', sans-serif;
-            padding: 20px;
-        }
+@section('title', 'Admin Sign In - BookMyBeauty')
 
-        .admin-card {
-            background: #1a1a2e;
-            width: 100%;
-            max-width: 420px;
-            padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(201, 169, 110, 0.3);
-            color: white;
-        }
+@section('media-class', 'auth__media--login')
 
-        .admin-card .logo {
-            text-align: center;
-            margin-bottom: 25px;
-        }
+@section('headline', 'Administration console')
 
-        .admin-card h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 24px;
-            color: white;
-            margin-bottom: 6px;
-        }
+@section('intro', 'This entrance is reserved for platform administrators. Customer and beautician accounts sign in from the regular login page.')
 
-        .admin-card h2 span {
-            color: var(--accent);
-        }
+@section('points')
+    <li>
+        <x-icon name="check" :size="16" />
+        Manage bookings, users and reported content
+    </li>
+    <li>
+        <x-icon name="check" :size="16" />
+        Review revenue trends and platform analytics
+    </li>
+    <li>
+        <x-icon name="check" :size="16" />
+        Suspend or restore registered accounts
+    </li>
+@endsection
 
-        .admin-badge {
-            background: var(--accent);
-            color: #1a1a2e;
-            font-size: 10px;
-            font-weight: 800;
-            padding: 3px 10px;
-            border-radius: 4px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            display: inline-block;
-            margin-top: 5px;
-        }
+@section('form')
+    <div class="page-head__title">Administrator sign in</div>
+    <p class="auth__sub" style="margin-bottom: 22px;">Use your staff credentials to open the console.</p>
 
-        .form-group {
-            margin-bottom: 20px;
-        }
+    @include('components.alert')
 
-        .form-group label {
-            display: block;
-            font-size: 13px;
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 6px;
-        }
+    <form action="{{ route('admin.login.submit') }}" method="POST">
+        @csrf
 
-        .form-group input {
-            width: 100%;
-            padding: 12px 14px;
-            background: #111424;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 8px;
-            color: white;
-            font-family: inherit;
-            font-size: 14px;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        .form-group input:focus {
-            border-color: var(--accent);
-        }
-    </style>
-</head>
-
-<body>
-    <div class="admin-card">
-        <div class="logo">
-            <h2>BookMy<span>Beauty</span></h2>
-            <span class="admin-badge">Admin Authentication</span>
+        <div class="field">
+            <label for="email">Administrator email</label>
+            <input type="email" id="email" name="email" value="{{ old('email') }}" required autofocus
+                placeholder="admin@bookmybeauty.com">
         </div>
 
-        @include('components.alert')
-
-        <form action="{{ route('admin.login.submit') }}" method="POST">
-            @csrf
-            <div class="form-group">
-                <label for="email">Administrator Email</label>
-                <input type="email" id="email" name="email" value="{{ old('email') }}" required autofocus
-                    placeholder="admin@beauty.com">
+        <div class="field">
+            <label for="password">Password</label>
+            <div class="pw">
+                <input type="password" id="password" name="password" required placeholder="Your password">
+                <button type="button" class="pw__toggle" data-target="password" aria-label="Show password">
+                    <span class="pw__show"><x-icon name="eye" :size="18" /></span>
+                    <span class="pw__hide"><x-icon name="close" :size="18" /></span>
+                </button>
             </div>
-
-            <div class="form-group">
-                <label for="password">Administrator Password</label>
-                <input type="password" id="password" name="password" required placeholder="••••••••">
-            </div>
-
-            <button type="submit" class="btn"
-                style="width: 100%; padding: 12px; font-size: 14px; border-radius: 8px; background: var(--accent); color: #1a1a2e; font-weight: 700;">Enter
-                Console</button>
-        </form>
-
-        <div style="margin-top: 25px; text-align: center; font-size: 12px; color: rgba(255,255,255,0.4);">
-            Restricted area. All access attempts are logged and monitored.
         </div>
-    </div>
-</body>
 
-</html>
+        <button type="submit" class="btn btn--accent btn--block">Enter console</button>
+    </form>
+
+    <p class="auth__foot">
+        Not an administrator? <a href="{{ route('login') }}">Customer sign in</a>
+    </p>
+@endsection
+
+@section('scripts')
+    <script>
+        document.querySelectorAll('.pw__toggle').forEach(function (button) {
+            button.addEventListener('click', function () {
+                var input = document.getElementById(button.dataset.target);
+                var revealed = input.type === 'text';
+
+                input.type = revealed ? 'password' : 'text';
+                button.classList.toggle('is-on', !revealed);
+                button.setAttribute('aria-label', revealed ? 'Show password' : 'Hide password');
+            });
+        });
+    </script>
+@endsection

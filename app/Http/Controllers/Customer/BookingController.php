@@ -155,7 +155,7 @@ class BookingController extends Controller
         $bookings = Booking::with(['service.beautician.user'])
             ->where('customer_id', Auth::id())
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(10);
 
         return view('customer.my_bookings', compact('bookings'));
     }

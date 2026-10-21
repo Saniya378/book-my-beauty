@@ -1,119 +1,94 @@
 @extends('layouts.beautician')
 
-@section('title', 'Client Appointments - Beautician Studio')
-
-@section('styles')
-<style>
-    .page-header {
-        background: linear-gradient(135deg, var(--primary), var(--primary-darker));
-        color: white;
-        padding: 25px 30px;
-        border-radius: var(--border-radius);
-        margin-bottom: 25px;
-        border-bottom: 3px solid var(--accent);
-    }
-    .booking-table {
-        width: 100%;
-        border-collapse: collapse;
-        background: white;
-        border-radius: var(--border-radius);
-        overflow: hidden;
-        box-shadow: var(--shadow);
-    }
-    .booking-table th {
-        background: #1a1a2e;
-        color: white;
-        padding: 14px 18px;
-        font-size: 12px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        text-align: left;
-    }
-    .booking-table td {
-        padding: 16px 18px;
-        border-bottom: 1px solid #f0f0f0;
-        font-size: 13px;
-        vertical-align: middle;
-    }
-</style>
-@endsection
+@section('title', 'Appointments - BookMyBeauty Studio')
 
 @section('content')
-<div class="page-header">
-    <h2 style="font-family: 'Playfair Display', serif; font-size: 22px; margin-bottom: 4px;">Manage Client Appointments</h2>
-    <p style="font-size: 13px; opacity: 0.85; margin: 0;">Review, confirm, or cancel incoming appointments. Notifications are automatically sent to clients.</p>
-</div>
+    <div class="page-head">
+        <div>
+            <h1 class="page-head__title">Appointments</h1>
+            <p class="page-head__sub">Confirm or decline requests. Customers are notified automatically.</p>
+        </div>
+    </div>
 
-@if($bookings->isEmpty())
-    <div style="background: white; padding: 50px 20px; text-align: center; border-radius: var(--border-radius); box-shadow: var(--shadow);">
-        <div style="font-size: 40px; margin-bottom: 15px;">📅</div>
-        <h3 style="font-family: 'Playfair Display', serif; font-size: 20px; color: var(--primary); margin-bottom: 8px;">No appointments yet</h3>
-        <p style="color: var(--text-gray); font-size: 13px;">When customers book your services, their appointments will appear here.</p>
-    </div>
-@else
-    <div style="overflow-x: auto;">
-        <table class="booking-table">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Customer</th>
-                    <th>Service</th>
-                    <th>Date & Time</th>
-                    <th>Price</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($bookings as $b)
-                <tr>
-                    <td><strong>#{{ $b->id }}</strong></td>
-                    <td>
-                        <strong>{{ $b->customer->name ?? 'Customer' }}</strong>
-                        <div style="font-size: 11px; color: var(--text-gray);">✉️ {{ $b->customer->email ?? '' }}</div>
-                    </td>
-                    <td>{{ $b->service->service_name ?? 'Service' }}</td>
-                    <td>
-                        <div>📅 {{ $b->booking_date ? $b->booking_date->format('d M Y') : 'N/A' }}</div>
-                        <div style="font-size: 11px; color: var(--text-gray);">🕒 {{ date('h:i A', strtotime($b->booking_time)) }}</div>
-                    </td>
-                    <td>
-                        <strong style="color: #2e7d32;">Rs. {{ number_format($b->service->price ?? 0, 0) }}</strong>
-                    </td>
-                    <td>
-                        <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; padding: 4px 10px; border-radius: 12px;
-                            {{ $b->status === 'confirmed' ? 'background:#e8f5e9; color:#2e7d32; border:1px solid #c8e6c9;' : ($b->status === 'cancelled' ? 'background:#ffebee; color:#c62828; border:1px solid #ffcdd2;' : 'background:#fff8e1; color:#b78103; border:1px solid #ffe082;') }}">
-                            {{ $b->status }}
-                        </span>
-                    </td>
-                    <td>
-                        @if($b->status === 'pending')
-                            <div style="display: flex; gap: 8px;">
-                                <form action="{{ route('beautician.bookings.status', $b->id) }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="action" value="confirmed">
-                                    <button type="submit" style="background: #2e7d32; color: white; border: none; padding: 6px 12px; border-radius: 4px; font-size: 11px; cursor: pointer; font-weight: 600;">Confirm</button>
-                                </form>
-                                <form action="{{ route('beautician.bookings.status', $b->id) }}" method="POST" onsubmit="return confirm('Cancel this appointment?');">
-                                    @csrf
-                                    <input type="hidden" name="action" value="cancelled">
-                                    <button type="submit" style="background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; padding: 6px 12px; border-radius: 4px; font-size: 11px; cursor: pointer; font-weight: 600;">Cancel</button>
-                                </form>
-                            </div>
-                        @elseif($b->status === 'confirmed')
-                            <form action="{{ route('beautician.bookings.status', $b->id) }}" method="POST" onsubmit="return confirm('Cancel this confirmed appointment?');">
-                                @csrf
-                                <input type="hidden" name="action" value="cancelled">
-                                <button type="submit" style="background: transparent; color: #c62828; border: 1px solid #ffcdd2; padding: 5px 10px; border-radius: 4px; font-size: 11px; cursor: pointer;">Cancel Appointment</button>
-                            </form>
-                        @else
-                            <span style="font-size: 11px; color: #999;">Cancelled</span>
-                        @endif
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-@endif
+    @if ($bookings->isEmpty())
+        <section class="panel">
+            <div class="empty" style="padding: 55px 20px;">
+                <span class="icon-tile" style="margin: 0 auto 16px;"><x-icon name="bookings" :size="20" /></span>
+                <strong>No appointments yet</strong>
+                <p style="margin: 6px 0 0;">When a customer books one of your services it will show up here.</p>
+            </div>
+        </section>
+    @else
+        <section class="panel">
+            <div class="table-scroll">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Customer</th>
+                            <th>Service</th>
+                            <th>Schedule</th>
+                            <th>Price</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($bookings as $booking)
+                            <tr>
+                                <td class="table__id">{{ $booking->id }}</td>
+                                <td>
+                                    {{ $booking->customer?->name ?? 'Customer' }}
+                                    @if ($booking->customer?->email)
+                                        <span class="meta" style="margin-top: 3px;">
+                                            <x-icon name="mail" :size="12" />
+                                            {{ $booking->customer->email }}
+                                        </span>
+                                    @endif
+                                </td>
+                                <td>{{ $booking->service?->service_name ?? 'Service' }}</td>
+                                <td>
+                                    {{ $booking->booking_date?->format('j M Y') }}
+                                    <span class="table__note">{{ date('g:i A', strtotime($booking->booking_time)) }}</span>
+                                </td>
+                                <td>Rs. {{ number_format($booking->service?->price ?? 0, 0) }}</td>
+                                <td><span class="pill pill--{{ $booking->status }}">{{ $booking->status }}</span></td>
+                                <td>
+                                    <div class="table__actions">
+                                        @if ($booking->status === 'pending')
+                                            <form action="{{ route('beautician.bookings.status', $booking->id) }}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="action" value="confirmed">
+                                                <button type="submit" class="action-btn action-btn--approve">Confirm</button>
+                                            </form>
+
+                                            <form action="{{ route('beautician.bookings.status', $booking->id) }}" method="POST"
+                                                onsubmit="return confirm('Decline this appointment?')">
+                                                @csrf
+                                                <input type="hidden" name="action" value="cancelled">
+                                                <button type="submit" class="action-btn action-btn--danger">Decline</button>
+                                            </form>
+                                        @elseif ($booking->status === 'confirmed')
+                                            <form action="{{ route('beautician.bookings.status', $booking->id) }}" method="POST"
+                                                onsubmit="return confirm('Cancel this confirmed appointment?')">
+                                                @csrf
+                                                <input type="hidden" name="action" value="cancelled">
+                                                <button type="submit" class="action-btn action-btn--danger">Cancel</button>
+                                            </form>
+                                        @else
+                                            <span class="table__note">Closed</span>
+                                        @endif
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="panel__foot">
+                {{ $bookings->links('vendor.pagination.custom') }}
+            </div>
+        </section>
+    @endif
 @endsection

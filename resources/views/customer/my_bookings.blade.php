@@ -2,171 +2,102 @@
 
 @section('title', 'My Bookings - BookMyBeauty')
 
-@section('styles')
-    <style>
-        .page-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 24px;
-            color: var(--primary);
-            margin-bottom: 5px;
-        }
-
-        .booking-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            box-shadow: var(--shadow);
-        }
-
-        .booking-table th {
-            background: #1a1a2e;
-            color: white;
-            padding: 14px 18px;
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            text-align: left;
-        }
-
-        .booking-table td {
-            padding: 16px 18px;
-            border-bottom: 1px solid #f0f0f0;
-            font-size: 13px;
-            vertical-align: middle;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-
-        .badge-pending {
-            background: #fff8e1;
-            color: #b78103;
-            border: 1px solid #ffe082;
-        }
-
-        .badge-confirmed {
-            background: #e8f5e9;
-            color: #2e7d32;
-            border: 1px solid #c8e6c9;
-        }
-
-        .badge-cancelled {
-            background: #ffebee;
-            color: #c62828;
-            border: 1px solid #ffcdd2;
-        }
-    </style>
-@endsection
-
 @section('content')
-    <div style="margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center;">
+    <div class="page-head">
         <div>
-            <h2 class="page-title">My Bookings</h2>
-            <p style="color: var(--text-gray); font-size: 13px; margin: 0;">Track, review, or download receipts for all your
-                beauty appointments.</p>
+            <h1 class="page-head__title">My bookings</h1>
+            <p class="page-head__sub">Track every appointment, download receipts and leave a review.</p>
         </div>
-        <a href="{{ route('browse') }}" class="btn" style="padding: 10px 22px; font-size: 13px;">+ Book New Appointment</a>
+
+        <div class="page-head__actions">
+            <a href="{{ route('browse') }}" class="btn">
+                <x-icon name="plus" :size="15" />
+                New appointment
+            </a>
+        </div>
     </div>
 
     @if ($bookings->isEmpty())
-        <div
-            style="background: white; padding: 50px 20px; text-align: center; border-radius: var(--border-radius); box-shadow: var(--shadow);">
-            <div style="font-size: 40px; margin-bottom: 15px;">📅</div>
-            <h3 style="font-family: 'Playfair Display', serif; font-size: 20px; color: var(--primary); margin-bottom: 8px;">
-                No appointments yet</h3>
-            <p style="color: var(--text-gray); font-size: 13px; margin-bottom: 20px;">You haven't booked any beauty
-                treatments yet. Explore our verified artists today!</p>
-            <a href="{{ route('browse') }}" class="btn" style="padding: 10px 24px; font-size: 13px;">Find a
-                Beautician</a>
-        </div>
+        <section class="panel">
+            <div class="empty" style="padding: 55px 20px;">
+                <span class="icon-tile" style="margin: 0 auto 16px;"><x-icon name="bookings" :size="20" /></span>
+                <strong>No appointments yet</strong>
+                <p style="margin: 6px 0 20px;">Explore verified beauticians and book your first treatment.</p>
+                <a href="{{ route('browse') }}" class="btn btn--accent">Find a beautician</a>
+            </div>
+        </section>
     @else
-        <div style="overflow-x: auto;">
-            <table class="booking-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Beautician</th>
-                        <th>Service</th>
-                        <th>Schedule</th>
-                        <th>Amount</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($bookings as $b)
+        <section class="panel">
+            <div class="table-scroll">
+                <table class="table">
+                    <thead>
                         <tr>
-                            <td><strong>#{{ $b->id }}</strong></td>
-                            <td>
-                                <strong
-                                    style="color: var(--primary);">{{ $b->service->beautician->user->name ?? 'Beautician' }}</strong>
-                                <div style="font-size: 11px; color: var(--text-gray);">📍
-                                    {{ $b->service->beautician->location ?? 'N/A' }}</div>
-                            </td>
-                            <td>
-                                <div>{{ $b->service->service_name ?? 'Service' }}</div>
-                                <div style="font-size: 11px; color: var(--text-gray);">⏱ {{ $b->service->duration ?? 0 }}
-                                    mins</div>
-                            </td>
-                            <td>
-                                <div>📅 {{ $b->booking_date ? $b->booking_date->format('d M Y') : 'N/A' }}</div>
-                                <div style="font-size: 11px; color: var(--text-gray);">🕒
-                                    {{ date('h:i A', strtotime($b->booking_time)) }}</div>
-                            </td>
-                            <td>
-                                <strong style="color: #2e7d32;">Rs. {{ number_format($b->service->price ?? 0, 0) }}</strong>
-                            </td>
-                            <td>
-                                <span class="badge badge-{{ $b->status }}">
-                                    {{ ucfirst($b->status) }}
-                                </span>
-                            </td>
-                            <td>
-                                <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
-                                    <a href="{{ route('customer.bookings.receipt', $b->id) }}" class="btn btn-outline"
-                                        style="padding: 5px 10px; font-size: 11px; text-decoration: none; border-radius: 4px;"
-                                        title="Download PDF Receipt">
-                                        📥 PDF Receipt
-                                    </a>
-
-                                    @if ($b->status !== 'cancelled')
-                                        @if ($b->canBeCancelled())
-                                            <form action="{{ route('customer.bookings.cancel', $b->id) }}" method="POST"
-                                                onsubmit="return confirm('Are you sure you want to cancel this booking?');"
-                                                style="display:inline;">
-                                                @csrf
-                                                <button type="submit"
-                                                    style="background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; padding: 5px 10px; border-radius: 4px; font-size: 11px; cursor: pointer; font-weight: 600;">
-                                                    Cancel
-                                                </button>
-                                            </form>
-                                        @else
-                                            <span style="font-size: 10px; color: #999;"
-                                                title="Bookings can only be cancelled within 2 hours of creation">Past 2h
-                                                window</span>
-                                        @endif
-                                    @endif
-
-                                    @if ($b->status === 'confirmed' && $b->service && $b->service->beautician)
-                                        <a href="{{ route('customer.review', $b->service->beautician->id) }}"
-                                            style="font-size: 11px; color: var(--accent); text-decoration: none; font-weight: 600; margin-left: 4px;">
-                                            ★ Review
-                                        </a>
-                                    @endif
-                                </div>
-                            </td>
+                            <th>#</th>
+                            <th>Beautician</th>
+                            <th>Service</th>
+                            <th>Schedule</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th></th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+                        @foreach ($bookings as $booking)
+                            <tr>
+                                <td class="table__id">{{ $booking->id }}</td>
+                                <td>
+                                    {{ $booking->service?->beautician?->user?->name ?? 'Beautician' }}
+                                    <span class="meta" style="margin-top: 3px;">
+                                        <x-icon name="map-pin" :size="12" />
+                                        {{ $booking->service?->beautician?->location ?: 'Location on booking' }}
+                                    </span>
+                                </td>
+                                <td>
+                                    {{ $booking->service?->service_name ?? 'Service' }}
+                                    @if ($booking->service?->duration)
+                                        <span class="table__note">{{ $booking->service->duration }} min</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    {{ $booking->booking_date?->format('j M Y') }}
+                                    <span class="table__note">{{ date('g:i A', strtotime($booking->booking_time)) }}</span>
+                                </td>
+                                <td>Rs. {{ number_format($booking->service?->price ?? 0, 0) }}</td>
+                                <td><span class="pill pill--{{ $booking->status }}">{{ $booking->status }}</span></td>
+                                <td>
+                                    <div class="table__actions">
+                                        <a href="{{ route('customer.bookings.receipt', $booking->id) }}" class="action-btn"
+                                            title="Download PDF receipt">
+                                            <x-icon name="download" :size="13" />
+                                            Receipt
+                                        </a>
+
+                                        @if ($booking->status !== 'cancelled' && $booking->canBeCancelled())
+                                            <form action="{{ route('customer.bookings.cancel', $booking->id) }}" method="POST"
+                                                onsubmit="return confirm('Cancel this booking?')">
+                                                @csrf
+                                                <button type="submit" class="action-btn action-btn--danger">Cancel</button>
+                                            </form>
+                                        @endif
+
+                                        @if ($booking->status === 'confirmed' && $booking->service?->beautician)
+                                            <a href="{{ route('customer.review', $booking->service->beautician->id) }}"
+                                                class="action-btn">
+                                                <x-icon name="review" :size="13" />
+                                                Review
+                                            </a>
+                                        @endif
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="panel__foot">
+                {{ $bookings->links('vendor.pagination.custom') }}
+            </div>
+        </section>
     @endif
 @endsection

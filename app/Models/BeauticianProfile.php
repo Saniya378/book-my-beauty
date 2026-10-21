@@ -36,6 +36,15 @@ class BeauticianProfile extends Model
         return $this->hasMany(Service::class, 'beautician_id')->where('is_active', 1);
     }
 
+    /**
+     * Bookings are linked to a beautician through the service that was booked:
+     * beautician_profiles.id <- services.beautician_id <- bookings.service_id
+     */
+    public function bookings()
+    {
+        return $this->hasManyThrough(Booking::class, Service::class, 'beautician_id', 'service_id');
+    }
+
     public function availability()
     {
         return $this->hasMany(Availability::class, 'beautician_id');

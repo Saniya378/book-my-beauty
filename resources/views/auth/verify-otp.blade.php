@@ -1,392 +1,163 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.auth')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verify Email - BookMyBeauty</title>
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap"
-        rel="stylesheet">
-    <style>
-        body {
-            display: flex;
-            min-height: 100vh;
-            background: var(--primary);
-            margin: 0;
-            font-family: 'Poppins', sans-serif;
-            align-items: center;
-            justify-content: center;
-        }
+@section('title', 'Verify Your Email - BookMyBeauty')
 
-        .otp-card {
-            background: white;
-            border-radius: 16px;
-            padding: 50px 60px;
-            width: 100%;
-            max-width: 460px;
-            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.18);
-            text-align: center;
-        }
+@section('media-class', 'auth__media--register')
 
-        .otp-icon {
-            width: 72px;
-            height: 72px;
-            background: linear-gradient(135deg, #c9a96e, #e0c78a);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 32px;
-        }
+@section('headline', 'One quick step before you start booking')
 
-        .otp-card h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 26px;
-            color: var(--primary);
-            margin-bottom: 8px;
-        }
+@section('intro', 'We send a six digit code to your email so every account on BookMyBeauty belongs to a real person.')
 
-        .otp-card p {
-            font-size: 13.5px;
-            color: var(--text-gray);
-            line-height: 1.6;
-            margin-bottom: 28px;
-        }
+@section('points')
+    <li>
+        <x-icon name="check" :size="16" />
+        The code expires after 10 minutes
+    </li>
+    <li>
+        <x-icon name="check" :size="16" />
+        Resend it as often as you need
+    </li>
+    <li>
+        <x-icon name="check" :size="16" />
+        Your details are never shared with beauticians
+    </li>
+@endsection
 
-        .otp-card p .phone-num {
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        /* OTP Input Boxes */
-        .otp-input-row {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin-bottom: 24px;
-        }
-
-        .otp-digit {
-            width: 50px;
-            height: 58px;
-            border: 2px solid var(--border);
-            border-radius: 10px;
-            font-size: 22px;
-            font-weight: 700;
-            text-align: center;
-            color: var(--primary);
-            outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
-            caret-color: var(--accent);
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .otp-digit:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(201, 169, 110, 0.18);
-        }
-
-        .otp-digit.filled {
-            border-color: var(--accent);
-            background: rgba(201, 169, 110, 0.06);
-        }
-
-        .timer-text {
-            font-size: 12.5px;
-            color: var(--text-gray);
-            margin-bottom: 20px;
-        }
-
-        .timer-text #countdown {
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .timer-text #countdown.expired {
-            color: #e74c3c;
-        }
-
-        .btn-otp-verify {
-            width: 100%;
-            padding: 13px;
-            background: var(--primary);
-            color: var(--accent);
-            border: none;
-            border-radius: 10px;
-            font-size: 14px;
-            font-weight: 600;
-            font-family: 'Poppins', sans-serif;
-            cursor: pointer;
-            letter-spacing: 0.5px;
-            transition: background 0.2s, transform 0.1s;
-            margin-bottom: 14px;
-        }
-
-        .btn-otp-verify:hover {
-            background: #0f3460;
-            transform: translateY(-1px);
-        }
-
-        .btn-otp-verify:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .resend-row {
-            font-size: 13px;
-            color: var(--text-gray);
-        }
-
-        .resend-row button {
-            background: none;
-            border: none;
-            color: var(--accent);
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 13px;
-            font-family: inherit;
-            padding: 0;
-            text-decoration: underline;
-        }
-
-        .resend-row button:disabled {
-            color: #aaa;
-            cursor: not-allowed;
-            text-decoration: none;
-        }
-
-        .back-link {
-            display: block;
-            margin-top: 18px;
-            font-size: 12.5px;
-            color: var(--text-gray);
-            text-decoration: none;
-        }
-
-        .back-link:hover {
-            color: var(--accent);
-        }
-
-        .steps-indicator {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            justify-content: center;
-            margin-bottom: 28px;
-        }
-
-        .step-dot {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: 700;
-        }
-
-        .step-dot.done {
-            background: #2ecc71;
-            color: white;
-        }
-
-        .step-dot.active {
-            background: var(--accent);
-            color: var(--primary);
-        }
-
-        .step-line {
-            flex: 0 0 40px;
-            height: 2px;
-            background: var(--accent);
-        }
-
-        .dev-alert {
-            background: #fff3cd;
-            border: 1px solid #ffc107;
-            border-radius: 8px;
-            padding: 10px 14px;
-            font-size: 12.5px;
-            color: #856404;
-            text-align: left;
-            margin-bottom: 18px;
-            line-height: 1.5;
-        }
-
-        @media(max-width: 500px) {
-            .otp-card {
-                padding: 35px 20px;
-            }
-
-            .otp-digit {
-                width: 42px;
-                height: 50px;
-                font-size: 18px;
-            }
-        }
-    </style>
-</head>
-
-<body>
-
-    <div class="otp-card">
-        <div class="steps-indicator">
-            <div class="step-dot done">✓</div>
-            <div class="step-line"></div>
-            <div class="step-dot active">2</div>
-        </div>
-
-        <div class="otp-icon">📧</div>
-
-        <h3>Verify Your Email</h3>
-
-        <p>
-            We've sent a 6-digit OTP to your email address<br>
-            @if (session('pending_email'))
-                <span class="phone-num">{{ session('pending_email') }}</span><br>
-            @endif
-            Enter the code below to activate your account.
-        </p>
-
-        @if (session('dev_otp_message'))
-            <div class="dev-alert">⚠️ {!! session('dev_otp_message') !!}</div>
-        @endif
-
-        @if ($errors->any())
-            <div
-                style="background:#fdf0f0; border:1px solid #e74c3c; border-radius:8px; padding:10px 14px; color:#c0392b; font-size:13px; margin-bottom:16px; text-align:left;">
-                {{ $errors->first() }}
-            </div>
-        @endif
-        @if (session('error'))
-            <div
-                style="background:#fdf0f0; border:1px solid #e74c3c; border-radius:8px; padding:10px 14px; color:#c0392b; font-size:13px; margin-bottom:16px; text-align:left;">
-                {{ session('error') }}
-            </div>
-        @endif
-        @if (session('success'))
-            <div
-                style="background:#f0fdf4; border:1px solid #2ecc71; border-radius:8px; padding:10px 14px; color:#155724; font-size:13px; margin-bottom:16px; text-align:left;">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        <form id="otpForm" action="{{ route('register.otp.verify') }}" method="POST">
-            @csrf
-            <input type="hidden" name="otp" id="hiddenOtp">
-
-            <div class="otp-input-row">
-                <input class="otp-digit" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]"
-                    autocomplete="one-time-code" id="d1">
-                <input class="otp-digit" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]"
-                    id="d2">
-                <input class="otp-digit" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]"
-                    id="d3">
-                <input class="otp-digit" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]"
-                    id="d4">
-                <input class="otp-digit" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]"
-                    id="d5">
-                <input class="otp-digit" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]"
-                    id="d6">
-            </div>
-
-            <div class="timer-text">
-                Code expires in <span id="countdown">10:00</span>
-            </div>
-
-            <button type="submit" class="btn-otp-verify" id="verifyBtn">
-                Verify &amp; Create Account
-            </button>
-        </form>
-
-        <div class="resend-row">
-            Didn't receive the code?&nbsp;
-            <form action="{{ route('register.otp.resend') }}" method="POST" style="display:inline;">
-                @csrf
-                <button type="submit" id="resendBtn">Resend OTP</button>
-            </form>
-        </div>
-
-        <a href="{{ route('register') }}" class="back-link">← Change Details / Start Over</a>
+@section('form')
+    <div class="steps">
+        <div class="steps__dot steps__dot--done"><x-icon name="check" :size="14" /></div>
+        <div class="steps__line steps__line--done"></div>
+        <div class="steps__dot">2</div>
     </div>
 
+    <div class="icon-tile" style="margin-bottom: 14px;"><x-icon name="mail" :size="20" /></div>
+
+    <div class="page-head__title">Verify your email</div>
+    <p class="auth__sub" style="margin-bottom: 4px;">
+        Enter the 6 digit code we sent to
+        @if (session('pending_email'))
+            <strong style="color: var(--primary);">{{ session('pending_email') }}</strong>
+        @endif
+    </p>
+
+    @include('components.alert')
+
+    @if (session('dev_otp_message'))
+        <div class="notice notice--warn" style="margin-bottom: 16px;">
+            <span class="notice__icon"><x-icon name="warning" :size="17" /></span>
+            <span>{!! session('dev_otp_message') !!}</span>
+        </div>
+    @endif
+
+    <form id="otpForm" action="{{ route('register.otp.verify') }}" method="POST">
+        @csrf
+        <input type="hidden" name="otp" id="hiddenOtp">
+
+        <div class="otp">
+            <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="one-time-code" id="d1">
+            <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" id="d2">
+            <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" id="d3">
+            <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" id="d4">
+            <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" id="d5">
+            <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" id="d6">
+        </div>
+
+        <p class="otp-note" id="countdownNote">
+            Code expires in <strong id="countdown">10:00</strong>
+        </p>
+
+        <button type="submit" class="btn btn--accent btn--block" id="verifyBtn" style="margin-top: 18px;">
+            Verify and create account
+        </button>
+    </form>
+
+    <div style="margin-top: 16px; text-align: center; font-size: 13px; color: var(--text-gray);">
+        Did not receive the code?
+        <form action="{{ route('register.otp.resend') }}" method="POST" style="display: inline;">
+            @csrf
+            <button type="submit" class="btn btn--sm btn--ghost" id="resendBtn">Resend code</button>
+        </form>
+    </div>
+
+    <p class="auth__foot">
+        <a href="{{ route('register') }}">
+            <x-icon name="arrow-left" :size="14" />
+            Use a different email
+        </a>
+    </p>
+@endsection
+
+@section('scripts')
     <script>
-        // ── OTP digit inputs: auto-focus next, handle backspace ──
         const digits = ['d1', 'd2', 'd3', 'd4', 'd5', 'd6'].map(id => document.getElementById(id));
         const hidden = document.getElementById('hiddenOtp');
         const verifyBtn = document.getElementById('verifyBtn');
+        const countdown = document.getElementById('countdown');
+        const countdownNote = document.getElementById('countdownNote');
 
-        digits.forEach((input, idx) => {
-            input.addEventListener('input', (e) => {
-                // Only allow digits
+        function syncHidden() {
+            hidden.value = digits.map(digit => digit.value).join('');
+        }
+
+        digits.forEach((input, index) => {
+            input.addEventListener('input', () => {
                 input.value = input.value.replace(/\D/g, '');
-                if (input.value && idx < 5) digits[idx + 1].focus();
-                input.classList.toggle('filled', input.value.length > 0);
+                input.classList.toggle('is-filled', input.value.length > 0);
+                if (input.value && index < 5) {
+                    digits[index + 1].focus();
+                }
                 syncHidden();
             });
-            input.addEventListener('keydown', (e) => {
-                if (e.key === 'Backspace' && !input.value && idx > 0) {
-                    digits[idx - 1].focus();
-                    digits[idx - 1].value = '';
-                    digits[idx - 1].classList.remove('filled');
+
+            input.addEventListener('keydown', event => {
+                if (event.key === 'Backspace' && !input.value && index > 0) {
+                    digits[index - 1].focus();
+                    digits[index - 1].value = '';
+                    digits[index - 1].classList.remove('is-filled');
                     syncHidden();
                 }
             });
-            input.addEventListener('paste', (e) => {
-                e.preventDefault();
-                const pasted = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '');
-                pasted.split('').forEach((ch, i) => {
-                    if (digits[i]) {
-                        digits[i].value = ch;
-                        digits[i].classList.add('filled');
+
+            input.addEventListener('paste', event => {
+                event.preventDefault();
+                const pasted = (event.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '');
+
+                pasted.split('').forEach((character, position) => {
+                    if (digits[position]) {
+                        digits[position].value = character;
+                        digits[position].classList.add('is-filled');
                     }
                 });
-                const next = Math.min(pasted.length, 5);
-                digits[next].focus();
+
+                digits[Math.min(pasted.length, 5)].focus();
                 syncHidden();
             });
         });
 
-        function syncHidden() {
-            hidden.value = digits.map(d => d.value).join('');
-        }
-
-        // Auto-submit when all 6 digits entered
-        function checkAutoSubmit() {
-            if (digits.every(d => d.value.length === 1)) {
-                setTimeout(() => document.getElementById('otpForm').submit(), 200);
+        // submit as soon as all six boxes are filled
+        digits.forEach(digit => digit.addEventListener('input', () => {
+            if (digits.every(box => box.value.length === 1)) {
+                setTimeout(() => document.getElementById('otpForm').submit(), 250);
             }
-        }
-        digits.forEach(d => d.addEventListener('input', checkAutoSubmit));
+        }));
 
-        // ── Countdown timer (10 minutes) ──
-        const countdownEl = document.getElementById('countdown');
-        let timeLeft = 600; // 10 minutes in seconds
+        let secondsLeft = 600;
 
-        const timer = setInterval(() => {
-            timeLeft--;
-            if (timeLeft <= 0) {
-                clearInterval(timer);
-                countdownEl.textContent = 'Expired';
-                countdownEl.classList.add('expired');
+        setInterval(() => {
+            secondsLeft--;
+
+            if (secondsLeft <= 0) {
+                countdown.textContent = 'expired';
+                countdownNote.classList.add('is-expired');
                 verifyBtn.disabled = true;
-                verifyBtn.textContent = 'OTP Expired — Please Resend';
+                verifyBtn.textContent = 'Code expired, please resend';
                 return;
             }
-            const m = Math.floor(timeLeft / 60);
-            const s = timeLeft % 60;
-            countdownEl.textContent = `${m}:${s.toString().padStart(2, '0')}`;
+
+            const minutes = Math.floor(secondsLeft / 60);
+            countdown.textContent = minutes + ':' + String(secondsLeft % 60).padStart(2, '0');
         }, 1000);
 
-        // Focus first digit on load
         digits[0].focus();
     </script>
-
-</body>
-
-</html>
+@endsection

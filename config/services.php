@@ -31,18 +31,6 @@ return [
         ],
     ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | Twilio SMS (for OTP verification during registration)
-    |--------------------------------------------------------------------------
-    | Set TWILIO_SID, TWILIO_TOKEN, and TWILIO_FROM in your .env file.
-    | Leave blank to run in dev mode (OTP shown on screen for local testing).
-    */
-    'twilio' => [
-        'sid'   => env('TWILIO_SID'),
-        'token' => env('TWILIO_TOKEN'),
-        'from'  => env('TWILIO_FROM'),
-    ],
 
     /*
     |--------------------------------------------------------------------------
