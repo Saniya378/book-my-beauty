@@ -1,66 +1,108 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🌸 BookMyBeauty — Salon & Beautician Booking Platform
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+[![Laravel](https://img.shields.io/badge/Laravel-11.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
+[![PHP](https://img.shields.io/badge/PHP-8.2+-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://php.net)
+[![Google Gemini](https://img.shields.io/badge/Gemini%20AI-Integrated-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://aistudio.google.com)
+[![MySQL](https://img.shields.io/badge/MySQL-Database-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://mysql.com)
 
-## About Laravel
+**BookMyBeauty** is a modern, full-featured web platform that connects clients with verified beauty professionals and salon services. Featuring **Bella**, an integrated AI Salon Assistant powered by Google Gemini, BookMyBeauty makes discovering beauticians, scheduling appointments, and managing beauty routines seamless and effortless.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## ✨ Key Features
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 🤖 1. Bella — Smart AI Salon Assistant (Google Gemini)
+* **24/7 Intelligent Consultation:** Answers beauty questions, suggests treatments, and provides pricing details.
+* **Multimodal Support:** Supports text inquiries, voice/audio notes, and image analysis (haircut, skincare, nail art advice).
+* **Multi-Language Support:** Responds fluently in English, Urdu, and Roman Urdu.
 
-## Learning Laravel
+### 💄 2. Customer Experience
+* **Search & Filter:** Find top-rated beauticians by city, location, service category, and price range.
+* **Online Booking System:** Real-time appointment scheduling with date and time slot selection.
+* **Ratings & Reviews:** Leave verified feedback and photo reviews after appointments.
+* **Favorites & History:** Save favorite salons and track upcoming and past bookings.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### ✂️ 3. Beautician Portal
+* **Custom Profile & Portfolio:** Showcase work with high-resolution image galleries and bio.
+* **Service & Pricing Catalog:** Add, update, and manage beauty packages and pricing.
+* **Availability Management:** Set weekly working hours, blackout dates, and slot timings.
+* **Booking Dashboard:** Accept, reschedule, or cancel bookings in real-time.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### 🛡️ 4. Administrator Control Panel
+* **Comprehensive Analytics:** Total bookings, revenue insights, active users, and platform trends.
+* **User Management:** Oversee client and beautician accounts (activate/deactivate profiles).
+* **Quality & Content Moderation:** Ensure platform integrity and service quality.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## 🛠️ Tech Stack
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+* **Backend:** PHP 8.2+, Laravel 11
+* **Frontend:** Blade Templating, Responsive CSS3, JavaScript (AJAX / Fetch API)
+* **AI Engine:** Google Gemini API (`gemini-flash-lite`, `gemini-flash`)
+* **Database:** MySQL
+* **Authentication:** Role-Based Access Control (Admin, Beautician, Customer)
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+## 🚀 Getting Started
 
-## Contributing
+Follow these steps to run BookMyBeauty locally on your machine:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 1. Clone the Repository
+```bash
+git clone https://github.com/Saniya378/book-my-beauty.git
+cd book-my-beauty
+```
 
-## Code of Conduct
+### 2. Install Dependencies
+```bash
+composer install
+npm install && npm run build
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 3. Environment Configuration
+Create your `.env` file from the example:
+```bash
+cp .env.example .env
+```
+Open `.env` and set your database and API credentials:
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=book_my_beauty
+DB_USERNAME=root
+DB_PASSWORD=
 
-## Security Vulnerabilities
+# Google Gemini API Key for Bella AI Chatbot
+GEMINI_API_KEY=your_gemini_api_key_here
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 4. Generate Application Key & Migrate Database
+```bash
+php artisan key:generate
+php artisan migrate --seed
+```
 
-## License
+### 5. Start the Development Server
+```bash
+php artisan serve
+```
+Visit `http://127.0.0.1:8000` in your web browser.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## 🔒 Security & Privacy
+* Sensitive credentials (passwords, SMTP details, API keys) are strictly managed via environment variables (`.env`) and are ignored from version control.
+* Role-based middleware ensures secure route protection across customer, beautician, and admin panels.
+
+---
+
+## 👩‍💻 Author
+* **Saniya Zahra** — [GitHub Profile](https://github.com/Saniya378)
+
+---
+
+## 📄 License
+This project was developed as a Final Year Project (FYP). Distributed under the MIT License.
